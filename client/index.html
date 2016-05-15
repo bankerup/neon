@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="utf-8">
+        <meta name="author" content="bankerup.me">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Neon | File hosting and sharing</title>
+        <link rel="stylesheet" type="text/css" href="resources/css/main.css">
+    </head>
+    <body>
+        <div class="header">
+            <div class="container">
+                <div class="toggle">
+                    <div id="toggle"></div>
+                </div>
+                <div class="logo"><div></div></div>
+                <div class="search">
+                    <input type="text" id="search-bar">
+                    <div class="suggestions" id="suggestions"></div>
+                </div>
+                <div class="menu" id="menu">
+                    <div>
+                        <ul>
+                            <li id="home-tab">home</li>
+                            <li id="about-tab">about</li>
+                            <li id="upload-tab">upload</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="user-tab">
+                    <div class="inner">
+                        <div class="user-menu" id="user-menu">
+                            <div class="triangle">
+                            </div>
+                            <ul>
+                                <li id="my-profile-tab">my profile</li>
+                                <li id="logout-tab">logout</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="home-window"></div>
+        <div id="about-window">
+            <p>Neon is a file hosting and sharing script created by <a href="https://bankerup.me" target="_blank">Bankerup.me</a>. It is free and open source. You can use neon to create your own file hosting and sharing website. Currently neon has the following features:</p>
+            <ul>
+                <li>Mutiple files uploading</li>
+                <li>Chunked file uploading</li>
+                <li>Searching for files</li>
+                <li>Thumb generation for media files (image and video)</li>
+            </ul>
+            <p></p>
+        </div>
+        <div id="login-window">
+            <input type="text" placeholder="Enter your email." id="login-email">
+            <input type="password" placeholder="Enter your password." id="login-password">
+            <div class="warning" id="login-warning">
+                <span class="message">Invalid credentials</span>
+            </div>
+            <input type="button" value="login" id="login-button">
+            <div class="register">Not a member? <a href="" id="register-tab">register</a> from here.</div>
+        </div>
+        <div id="register-window">
+            <input type="text" placeholder="Enter your name." id="register-name">
+            <input type="text" placeholder="Enter your email." id="register-email">
+            <input type="password" placeholder="Enter your password." id="register-password">
+            <div class="warning" id="register-warning">
+                <span class="message">Invalid credentials</span>
+            </div>
+            <input type="button" value="register" id="register-button">
+        </div>
+        <div id="upload-window">
+            <div class="header">
+                <p>Upload panel</p>
+            </div>
+        </div>
+        <div id="my-profile-window"></div>
+        <div id="login-message-window"></div>
+        <script type="text/javascript" src="resources/script/upload.js"></script>
+        <script type="text/javascript" src="resources/script/main.js"></script>
+    </body>
+</html>
