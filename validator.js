@@ -22,8 +22,8 @@ exports.validFileName = function(fileName) {
 }
 
 // Validate the size
-exports.validSize = function(fileSize) {
-    var sizeReg = /^[0-9]?$/;
+exports.validFileSize = function(fileSize) {
+    var sizeReg = /^[0-9]{1,}$/;
     return sizeReg.test(fileSize);
 }
 
@@ -84,5 +84,5 @@ exports.validFileType = function(fileType) {
                 'audio/x-wav',
                 'multipart/x-gzip',
                 'multipart/x-zip'];
-    type.indexOf(fileType) == -1 ? return false : return true;    
+    return (type.indexOf(fileType) == -1) ? false : true;
 }

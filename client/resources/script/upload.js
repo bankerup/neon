@@ -35,7 +35,13 @@ function FileUploader() {
             size: file.size,
             type: file.type
         }, function(res){
-            if(res.success) {
+            if(!res.success) {
+                console.log(res.error);
+                fileUploader.isSending = false;
+                fileUploader.currentFile++;
+                setTimeout(fileUploader.startUploading(), 3000);
+            }
+            else {
                 // Upload the file data
                 fileUploader.uploadFile(res.id, file);
             }
@@ -67,7 +73,7 @@ function FileUploader() {
                     mySender.send();
                 });
                 mySender.sender.upload.addEventListener('progress', function(event) {
-                    sendedForProgressbar += (event.loaded - sentbysender);
+                    sendedForProgressbar += (event.loaded - sentBySender);
                     var percent = Math.min(Math.ceil(sendedForProgressbar/total*100),100);
                     item.children[0].children[0].setAttribute("style", "width: " + percent + "%; max-width: 100%;")
                     sentbysender = event.loaded;
@@ -78,7 +84,8 @@ function FileUploader() {
                         var myChunk = new Blob([myData.slice(sended, sended + chunkSize)], {type: 'application/bin'});
                         var myFormData = new FormData;
                         myFormData.append('data', myChunk);
-                        myFormData.append('location', sended);
+                        myFormData.append('size', myChunk.size);
+                        myFormData.append('position', sended);
                         myFormData.append('id', id);
                         // the place to send the data
                         mySender.sender.open('POST', 'API/appendData');
@@ -105,10 +112,10 @@ function FileUploader() {
                     }
                 }
             }
-            (new mySender()).send();
-            (new mySender()).send();
-            (new mySender()).send();
-            (new mySender()).send();
+            (new MySender()).send();
+            (new MySender()).send();
+            (new MySender()).send();
+            (new MySender()).send();
         }
     }
 }

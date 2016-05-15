@@ -57,7 +57,7 @@ function Request() {
         var connection = new XMLHttpRequest();
         var uriData = '?';
         for(var key in data) {
-            uri += key + '=' + encodeURIComponent(data[key]) + '&';
+            uriData += key + '=' + encodeURIComponent(data[key]) + '&';
         }
         // Remove the last &
         uriData = uriData.substr(0, uriData.length - 1);
@@ -235,7 +235,7 @@ function doLogout() {
 
 // Get the files from server to display them
 function updateHomeWindow() {
-    request.get('getFiles', {}, function(res){
+    request.get('API/getFiles', {skip : 0}, function(res){
         if(!res.success) {
             console.log(res.error);
             return;
@@ -245,26 +245,26 @@ function updateHomeWindow() {
             homeWindow.innerHTML +=`
                 <div class="item">
                     <div class="item-header">
-                        <p>${res.files.name[i].substr(0, 30)}</p>
+                        <p>${res.files[i].name.substr(0, 30)}</p>
                     </div>
                     <div class="item-content">
                         <div class="icon"></div>
                     </div>
                     <div class="item-footer">
-                        <a class="button" href="api/getTheFile?fileId=${res.files.id[i]}" target="_self">download</a>
+                        <a class="button" href="API/getTheFile?fileId=${res.files[i]._id}" target="_self">download</a>
                     </div>
                 </div>`;
         }
         if(res.numberOfFiles != 0) homeWindow.innerHTML +=
             `<div class="get-more-files">
-                <input type="button" class="button" value="load more" onclick="getMoreFiles(${res.files.id[res.numberOfFiles-1]})">
+                <input type="button" class="button" value="load more" onclick="getMoreFiles(1)">
             </div>`;
     });
 }
 
 // Get more files from server to display them
- function getMoreFiles(lastFile) {
-     request.get('getMoreFiles', {lastFile : lastFile}, function(res){
+ function getMoreFiles(skip) {
+     request.get('API/getFiles', {skip : skip}, function(res){
          if(!res.success) {
              console.log(res.error);
              return;
@@ -272,11 +272,11 @@ function updateHomeWindow() {
          for(var i=0; i<res.numberOfFiles; i++) {
              var item = document.createElement('div');
              item.setAttribute('class', 'item');
-             item.setAttribute('data-file-id', result.files.id[i]);
+             item.setAttribute('data-file-id', res.files[i].id);
              var itemHeader = document.createElement('div');
              itemHeader.setAttribute('class', 'item-header');
              var title = document.createElement('p');
-             title.appendChild(document.createTextNode(res.files.name[i].substr(0, 30)));
+             title.appendChild(document.createTextNode(res.files[i].name.substr(0, 30)));
              itemHeader.appendChild(title);
              item.appendChild(itemHeader);
              var itemContent = document.createElement('div');
@@ -289,7 +289,7 @@ function updateHomeWindow() {
              itemFooter.setAttribute('class', 'item-footer');
              var downloadAnchor = document.createElement("a");
              downloadAnchor.setAttribute('class', 'button');
-             downloadAnchor.setAttribute('href', `api/get_the_file?file_id=${res.files.id[i]}`);
+             downloadAnchor.setAttribute('href', `API/getTheFile?fileID=${res.files[i]._id}`);
              downloadAnchor.setAttribute('target', '_self');
              downloadAnchor.appendChild(document.createTextNode('Download'));
              itemFooter.appendChild(downloadAnchor);
@@ -299,7 +299,7 @@ function updateHomeWindow() {
          homeWindow.removeChild(homeWindow.lastChild);
          if(res.numberOfFiles != 0) homeWindow.innerHTML +=
             `<div class='get-more-files'>
-                <input type="button" class="button" value="load more" onclick="getMoreFiles(${res.files.id[res.number_of_files-1]})">
+                <input type="button" class="button" value="load more" onclick="getMoreFiles(${skip + 1})">
             </div>`;
      });
  }
