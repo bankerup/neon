@@ -81,13 +81,14 @@ var userID = '';
 var userName = '';
 var userRegistrationDate = Date.now();
 var userLastLogin = Date.now();
+var searchResult = {};
 
 // After the page has been loaded we display the home window
 homeWindow.setAttribute('style', 'display : block');
 
 // Try to login
 doLogin();
-updateHomeWindow();
+getFiles();
 
 //Switch from one window to another
 var WindowsSwitcher = function(currentWindow) {
@@ -104,7 +105,7 @@ var windowsSwitcher = new WindowsSwitcher(homeWindow);
 
 homeTab.addEventListener('click', function(event){
     event.preventDefault();
-    updateHomeWindow();
+    getFiles();
     windowsSwitcher.show(homeWindow);
 });
 
@@ -234,7 +235,7 @@ function doLogout() {
 }
 
 // Get the files from server to display them
-function updateHomeWindow() {
+function getFiles() {
     request.get('API/getFiles', {skip : 0}, function(res){
         if(!res.success) {
             console.log(res.error);
@@ -248,10 +249,10 @@ function updateHomeWindow() {
                         <p>${res.files[i].name.substr(0, 30)}</p>
                     </div>
                     <div class="item-content">
-                        <div class="icon"></div>
+                        <div class="icon" style="background-image : url('API/getFileThumb?fileID=${res.files[i]._id}');"></div>
                     </div>
                     <div class="item-footer">
-                        <a class="button" href="API/getTheFile?fileId=${res.files[i]._id}" target="_self">download</a>
+                        <a class="button" href="API/getTheFile?fileID=${res.files[i]._id}" target="_self">download</a>
                     </div>
                 </div>`;
         }
@@ -263,7 +264,7 @@ function updateHomeWindow() {
 }
 
 // Get more files from server to display them
- function getMoreFiles(skip) {
+ function getMoreFiles(skip, fileName) {
      request.get('API/getFiles', {skip : skip}, function(res){
          if(!res.success) {
              console.log(res.error);
@@ -283,6 +284,7 @@ function updateHomeWindow() {
              itemContent.setAttribute('class', 'item-content');
              var icon = document.createElement('div');
              icon.setAttribute('class', 'icon');
+             icon.style.backgroundImage = `url('API/getFileThumb?fileID=${res.files[i]._id}')`;
              itemContent.appendChild(icon);
              item.appendChild(itemContent);
              var itemFooter = document.createElement('div');
@@ -327,17 +329,18 @@ function downloadItem(event) {
 // Get suggestions from the server when searching for a file
 searchBar.addEventListener('input', function(event){
     var name = this.value;
-    request.get('searchForFiles', {name : name}, function(res){
+    request.get('API/getFiles', {fileName : name}, function(res){
         if(!res.success) {
-            console.log(result.error);
+            console.log(res.error);
             return;
         }
         var output = '<ul>';
-        for(var i=0; i<res.noOfFiles; i++) {
-            output += `<li><a href="" data-file-id="${result.id[i]}" onclick="getFile(event)">${res.name[i]}</a></li>`;
+        for(var i=0; i<res.numberOfFiles; i++) {
+            output += `<li><a href="" data-file-id="${res.files[i]._id}" onclick="getFile(event)">${res.files[i].name}</a></li>`;
         }
         suggestions.innerHTML = output + '</ul>';
         suggestions.style.display = 'block';
+        searchResult = res;
     });
 });
 
@@ -352,77 +355,29 @@ searchBar.addEventListener('keyup', function(event){
     if(event.keyCode != 13) {
         return;
     }
-    windowsSwitcher.show(homeTab, homeWindow);
-    var name = this.value;
+    var fileName = this.value;
     this.blur();
-    request.get('searchForFilesGet', {name : name}, function(res){
-        if(!res.success) {
-            console.log(res.error);
-            return;
-        }
-        homeWindow.innerHTML = '';
-        for(var i=0; i<res.numberOfFiles; i++) {
-            homeWindow.innerHTML +=`
-                <div class="item">
-                    <div class="item-header">
-                        <p>${res.files.name[i].substr(0, 30)}</p>
-                    </div>
-                    <div class="item-content">
-                        <div class="icon"></div>
-                    </div>
-                    <div class="item-footer">
-                        <a class="button" href="api/getTheFile?fileId=${res.files.id[i]}" target="_self">download</a>
-                    </div>
-                </div>`;
-        }
-        if(res.numberOfFiles != 0) homeWindow.innerHTML +=
-            `<div class="get-more-files">
-                <input type="button" class="button" value="load more" onclick="getMoreFiles(${res.files.id[res.numberOfFiles-1]})">
+    var res = searchResult;
+    homeWindow.innerHTML = '';
+    for(var i=0; i<res.numberOfFiles; i++) {
+        homeWindow.innerHTML +=`
+            <div class="item">
+                <div class="item-header">
+                    <p>${res.files[i].name.substr(0, 30)}</p>
+                </div>
+                <div class="item-content">
+                    <div class="icon" style="background-image : url('API/getFileThumb?fileID=${res.files[i]._id}');"></div>
+                </div>
+                <div class="item-footer">
+                    <a class="button" href="API/getTheFile?fileID=${res.files[i]._id}" target="_self">download</a>
+                </div>
             </div>`;
-    });
+    }
+    if(res.numberOfFiles != 0) homeWindow.innerHTML +=
+        `<div class="get-more-files">
+            <input type="button" class="button" value="load more" onclick="getMoreFiles(1, ${fileName})">
+        </div>`;
 });
-
-// Get more files for the previous search
-function getMoreFilesSearch(lastFile, name) {
-     request.post('getMoreFilesSearch', {lastFile : lastFile, name : name}, function(res){
-         if(!res.success) {
-             console.log(res.error);
-             return;
-         }
-         for(var i=0; i<res.numberOfFiles; i++) {
-             var item = document.createElement('div');
-             item.setAttribute('class', 'item');
-             item.setAttribute('data-file-id', result.files.id[i]);
-             var itemHeader = document.createElement('div');
-             itemHeader.setAttribute('class', 'item-header');
-             var title = document.createElement('p');
-             title.appendChild(document.createTextNode(res.files.name[i].substr(0, 30)));
-             itemHeader.appendChild(title);
-             item.appendChild(itemHeader);
-             var itemContent = document.createElement('div');
-             itemContent.setAttribute('class', 'item-content');
-             var icon = document.createElement('div');
-             icon.setAttribute('class', 'icon');
-             itemContent.appendChild(icon);
-             item.appendChild(itemContent);
-             var itemFooter = document.createElement('div');
-             itemFooter.setAttribute('class', 'item-footer');
-             var downloadAnchor = document.createElement("a");
-             downloadAnchor.setAttribute('class', 'button');
-             downloadAnchor.setAttribute('href', `api/getTheFile?fileId=${res.files.id[i]}`);
-             downloadAnchor.setAttribute('target', '_self');
-             downloadAnchor.appendChild(document.createTextNode('Download'));
-             itemFooter.appendChild(downloadAnchor);
-             item.appendChild(itemFooter);
-             homeWindow.insertBefore(item, homeWindow.lastChild);
-         }
-         homeWindow.removeChild(homeWindow.lastChild);
-         if(result.numberOfFiles != 0) homeWindow.innerHTML +=
-            `<div class="get-more-files">
-                <div><button onclick="getMoreFilesSearch(${res.files.id[res.numberOfFiles-1]}, '${name}')">Get more!</button></div>
-            </div>`;
-     });
- }
 
 // Get single file from the server and display it
 function getFile(event) {
@@ -446,7 +401,7 @@ function getFile(event) {
                         <div class="icon"></div>
                     </div>
                     <div class="item-footer">
-                        <a class="button" href="api/getTheFile?fileId=${res.files.id[i]}" target="_self">download</a>
+                        <a class="button" href="api/getTheFile?fileID=${res.files.id[i]}" target="_self">download</a>
                     </div>
                 </div>`;
         }

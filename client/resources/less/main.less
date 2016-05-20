@@ -3,10 +3,10 @@
 @font-family: 'Lora', serif;
 @background-color: #f2f4f4;
 @light-background-color: #f5f6f6;
-@border-color: #d7dcde; 
+@border-color: #d7dcde;
 @text-color: #fff;
 @button-border-color: #449dc1;
-@button-background-color: #61b6e0; 
+@button-background-color: #61b6e0;
 @button-hover-color: #6abae2;
 @button-active-color: #58b2de;
 @dark-text-color: #5e666e;
@@ -102,7 +102,7 @@ a {
         &:focus {
           outline-style: none;
           outline-width: 0;
-          border-color: @dark-text-color;
+          border-color: @border-color;
           background-color: @text-color;
         }
       }
@@ -110,14 +110,25 @@ a {
         position: absolute;
         display: none;
         border-style: solid;
-        border-color: @dark-text-color;
-        background-color: @light-background-color;
+        border-color: @border-color;
+        border-radius: 3px;
+        background-color: @text-color;
         border-width: 1px;
         margin-left: 0px;
-        margin-top: -1px;
+        margin-top: 3px;
         min-height: 50px;
         width: 100%;
         z-index: 99;
+        overflow-x: hidden;
+        ul {
+            list-style: none;
+            li {
+                padding: 5px;
+                a {
+                    font-weight: 400;
+                }
+            }
+        }
       }
     }
     #user-tab {
@@ -260,7 +271,7 @@ a {
         margin-top: 57px;
         width: 75px;
         height: 100px;
-        background-image: url('../image/ext/0.png');
+        background-image: url('/API/getFileThumb');
         background-size: 75px 100px;
       }
     }
@@ -337,7 +348,7 @@ a {
       outline-width: 0;
       border-color: @dark-text-color;
       background-color: @text-color;
-    }    
+    }
   }
   .warning {
     width: 278px;
@@ -474,18 +485,18 @@ a {
       }
     }
   }
-  
+
   #home-window {
     width: 320px;
     .get-more-files {
       width: 320px;
     }
   }
-  
+
   #about-window {
     width: 320px;
   }
-  
+
   #upload-window {
     width: 320px;
   }
@@ -506,7 +517,7 @@ a {
         top: 8px;
         width: 120px;
       }
-      user-tab {
+      #user-tab {
         position: absolute;
         right: 10px;
         top: 15px;
@@ -530,18 +541,18 @@ a {
       }
     }
   }
-  
+
   #home-window {
     width: 640px;
     .get-more-files {
       width: 640px;
     }
   }
-   
+
   #about-window {
     width: 640px;
   }
-  
+
   #upload-window {
     width: 640px;
   }
@@ -593,11 +604,11 @@ a {
       width: 960px;
     }
   }
-  
+
   #about-window {
     width: 960px;
   }
-  
+
   #upload-window {
     width: 960px;
   }
@@ -651,11 +662,11 @@ a {
       width: 1280px;
     }
   }
-  
+
   #about-window {
     width: 960px;
   }
-  
+
   #upload-window {
     width: 960px;
   }

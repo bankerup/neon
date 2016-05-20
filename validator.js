@@ -27,6 +27,7 @@ exports.validFileSize = function(fileSize) {
     return sizeReg.test(fileSize);
 }
 
+// Validate the mime type
 exports.validFileType = function(fileType) {
     var type = ['application/x-troff-msvideo',
                 'application/mac-binary',
@@ -85,4 +86,10 @@ exports.validFileType = function(fileType) {
                 'multipart/x-gzip',
                 'multipart/x-zip'];
     return (type.indexOf(fileType) == -1) ? false : true;
+}
+
+// Validate the object id
+exports.validObjectID = function(objectID) {
+    objectIDReg = /^[a-fA-F0-9]{24}$/;
+    return objectIDReg.test(objectID);
 }

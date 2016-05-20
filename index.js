@@ -338,11 +338,12 @@ neon.post('/API/closeFile', (req, res) => {
 // Get files
 neon.get('/API/getFiles', (req, res) => {
     var skip = 0;
+    var fileName = '';
     if((typeof req.query.skip) != 'undefined') {
         skip = req.query.skip;
     }
     MongoClient.connect(url, function(err, db){
-        db.collection('files').find(function(err, cursor){
+        var callback = function(err, cursor){
             cursor.sort({creationDate : -1}).skip(skip * 10).limit(10).toArray(function(err, result){
                 res.send(JSON.stringify({
                     success: true,
@@ -351,8 +352,142 @@ neon.get('/API/getFiles', (req, res) => {
                 }));
                 db.close();
             });
-        });
+        }
+        if((typeof req.query.fileName) != 'undefined') {
+            db.collection('files').find({name : {$regex : `.*${req.query.fileName}.*`, $options : 'i'}}, callback);
+        }
+        else if((typeof req.query.fileID) != 'undefined') {
+            db.collection('files').find({_id : {$q : new ObjectID(req.query.fileID)}}, callback);
+        }
+        else {
+            db.collection('files').find(callback);
+        }
     });
+});
+
+// Get the thumb/icon for the file
+neon.get('/API/getFileThumb', (req, res) => {
+    if((typeof req.query.fileID) !='undefined' && validator.validObjectID(req.query.fileID)) {
+        MongoClient.connect(url, function(err, db){
+            db.collection('files').findOne({_id : {$eq : new ObjectID(req.query.fileID)}}, function(db, result){
+                var type = ['application/x-troff-msvideo',
+                            'application/mac-binary',
+                            'application/macbinary',
+                            'application/octet-stream',
+                            'application/x-binary',
+                            'application/x-macbinary',
+                            'application/x-bzip',
+                            'application/x-bzip2',
+                            'application/x-pointplus',
+                            'application/msword',
+                            'application/octet-stream',
+                            'application/x-gzip',
+                            'application/x-javascript',
+                            'application/octet-stream',
+                            'application/x-shockwave-flash',
+                            'application/x-compressed',
+                            'application/x-zip-compressed',
+                            'application/zip',
+                            'image/bmp',
+                            'image/x-windows-bmp',
+                            'image/gif',
+                            'image/jpeg',
+                            'image/pjpeg',
+                            'image/jpeg',
+                            'image/pjpeg',
+                            'image/png',
+                            'text/x-asm',
+                            'text/asp',
+                            'text/plain',
+                            'text/x-c',
+                            'text/plain',
+                            'text/x-c',
+                            'text/css',
+                            'text/html',
+                            'text/html',
+                            'text/html',
+                            'video/avi',
+                            'video/msvideo',
+                            'video/x-msvideo',
+                            'video/quicktime',
+                            'video/mpeg',
+                            'video/x-mpeg',
+                            'video/x-mpeq2a',
+                            'video/mpeg',
+                            'video/x-mpeg',
+                            'video/mpeg',
+                            'video/mpeg',
+                            'audio/mpeg',
+                            'audio/x-mpeg',
+                            'audio/mpeg3',
+                            'audio/x-mpeg-3',
+                            'audio/mpeg',
+                            'audio/wav',
+                            'audio/x-wav',
+                            'multipart/x-gzip',
+                            'multipart/x-zip'];
+                var icon = type.indexOf(result.type) + 1;
+                var path = __dirname + '/extension/' + icon + '.png';
+                var file = fs.createReadStream(path, {buffer : 1024 * 1024});
+                res.setHeader('Content-Type', 'image/png');
+                file.pipe(res);
+            });
+        });
+        return;
+    }
+    res.setHeader('Content-Type', 'image/png');
+    var path = __dirname + '/extension/0.png';
+    fs.readFile(path, function(err, data){
+        res.send(data);
+    });
+});
+
+// Download the file
+neon.get('/API/getTheFile', (req, res) => {
+    if((typeof req.query.fileID) == 'undefined' || !validator.validObjectID(req.query.fileID)) {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({
+            success: false,
+            error: 'File ID is not provided or it is not valid'
+        }));
+    }
+    else {
+        MongoClient.connect(url, function(err, db){
+            if(err != null) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify({
+                    success: false,
+                    error: 'Database connection error'
+                }));
+            }
+            db.collection('files').findOne({
+                _id : {$eq : new ObjectID(req.query.fileID)}
+            }, function(err, result){
+                if(err != null) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({
+                        success: false,
+                        error: 'Result retrieval error'
+                    }));
+                }
+                else if(result == null) {
+                    res.setHeader('Content-Type', 'application/json');
+                    res.send(JSON.stringify({
+                        success: false,
+                        error: 'File not found'
+                    }));
+                }
+                else {
+                    var path = __dirname + '/filecenter/' + req.query.fileID;
+                    var file = fs.createReadStream(path, {buffer : 1024 * 1024});
+                    res.setHeader('Content-Type', result.type);
+                    res.setHeader('Content-Length', result.size);
+                    res.setHeader('Content-Disposition', 'attachment; filename=' + result.name);
+                    file.pipe(res);
+                }
+            });
+        });
+    }
 });
 
 // Start the server
