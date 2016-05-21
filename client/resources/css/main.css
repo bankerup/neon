@@ -27,6 +27,15 @@ a.button {
   font-size: 20px;
   font-weight: 700;
   padding: 4px 16px;
+}
+input[type="button"],
+a.button,
+input[type="button"]:active,
+a.button:active,
+input[type="button"]:hover,
+a.button:hover,
+input[type="button"]:visited,
+a.button:visited {
   outline-style: none;
   outline-width: 0;
   text-decoration: none;
@@ -139,6 +148,7 @@ a:hover {
   border-color: #5e666e;
   border-style: solid;
   display: none;
+  z-index: 99999;
 }
 .header .container #user-tab .inner .user-menu .triangle {
   position: absolute;
@@ -287,7 +297,16 @@ a:hover {
   color: #5e666e;
   margin: 20px auto;
 }
-#about-window p {
+#about-window > .header {
+  width: 100%;
+  height: 50px;
+  padding: 13px 20px;
+}
+#about-window > .header > p {
+  font-size: 20px;
+  color: #5e666e;
+}
+#about-window > p {
   padding: 16px 32px;
 }
 #about-window ul {
@@ -409,7 +428,7 @@ a:hover {
   border-color: #d7dcde;
 }
 #upload-window > .item .progress .fill {
-  width: 30%;
+  width: 0%;
   height: 100%;
   background-color: #d7dcde;
 }
@@ -529,30 +548,30 @@ a:hover {
     right: 0;
     height: 80px;
   }
-  .header .containr .toggle {
+  .header .container .toggle {
     display: none;
   }
-  .header .containr .logo {
+  .header .container .logo {
     position: absolute;
     left: 10px;
     top: 8px;
     width: 120px;
   }
-  .header .containr #user-tab {
+  .header .container #user-tab {
     position: absolute;
     right: 10px;
     top: 15px;
     height: 50px;
     width: 50px;
   }
-  .header .containr .search {
+  .header .container .search {
     position: absolute;
     height: 50px;
     left: 140px;
     right: 380px;
     top: 15px;
   }
-  .header .containr .menu {
+  .header .container .menu {
     position: absolute;
     height: 50px;
     width: 300px;

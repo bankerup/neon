@@ -13,7 +13,6 @@ var aboutTab = getElement('about-tab');
 var uploadTab = getElement('upload-tab');
 var userMenu = getElement('user-menu');
 var userTab = getElement('user-tab');
-var myProfileTab = getElement('my-profile-tab');
 var logoutTab = getElement('logout-tab');
 var homeWindow = getElement('home-window');
 var aboutWindow = getElement('about-window');
@@ -30,8 +29,6 @@ var registerButton = getElement('register-button');
 var registerWarning = getElement('register-warning');
 var registerTab = getElement('register-tab');
 var uploadWindow = getElement('upload-window');
-var myProfileWindow = getElement('my-profile-window');
-var loginMessageWindow = getElement('login-message-window');
 
 // Make AJAX request
 function Request() {
@@ -81,14 +78,7 @@ var userID = '';
 var userName = '';
 var userRegistrationDate = Date.now();
 var userLastLogin = Date.now();
-var searchResult = {};
-
-// After the page has been loaded we display the home window
-homeWindow.setAttribute('style', 'display : block');
-
-// Try to login
-doLogin();
-getFiles();
+var getFileOptions = {};
 
 //Switch from one window to another
 var WindowsSwitcher = function(currentWindow) {
@@ -105,7 +95,7 @@ var windowsSwitcher = new WindowsSwitcher(homeWindow);
 
 homeTab.addEventListener('click', function(event){
     event.preventDefault();
-    getFiles();
+    getFiles({skip : 0});
     windowsSwitcher.show(homeWindow);
 });
 
@@ -135,12 +125,6 @@ uploadTab.addEventListener('click', function(event){
         return;
     }
     windowsSwitcher.show(uploadWindow);
-});
-
-myProfileTab.addEventListener('click', function(event){
-    event.preventDefault();
-    // TO DO
-    windowsSwitcher.show(myProfileWindow);
 });
 
 logoutTab.addEventListener('click', function(event){
@@ -235,8 +219,9 @@ function doLogout() {
 }
 
 // Get the files from server to display them
-function getFiles() {
-    request.get('API/getFiles', {skip : 0}, function(res){
+function getFiles(options) {
+    getFileOptions = options;
+    request.get('API/getFiles', options, function(res){
         if(!res.success) {
             console.log(res.error);
             return;
@@ -258,14 +243,15 @@ function getFiles() {
         }
         if(res.numberOfFiles != 0) homeWindow.innerHTML +=
             `<div class="get-more-files">
-                <input type="button" class="button" value="load more" onclick="getMoreFiles(1)">
+                <input type="button" class="button" value="load more" onclick="getMoreFiles()">
             </div>`;
     });
 }
 
 // Get more files from server to display them
- function getMoreFiles(skip, fileName) {
-     request.get('API/getFiles', {skip : skip}, function(res){
+ function getMoreFiles() {
+     getFileOptions.skip = getFileOptions.skip + 1;
+     request.get('API/getFiles', getFileOptions, function(res){
          if(!res.success) {
              console.log(res.error);
              return;
@@ -301,30 +287,10 @@ function getFiles() {
          homeWindow.removeChild(homeWindow.lastChild);
          if(res.numberOfFiles != 0) homeWindow.innerHTML +=
             `<div class='get-more-files'>
-                <input type="button" class="button" value="load more" onclick="getMoreFiles(${skip + 1})">
+                <input type="button" class="button" value="load more" onclick="getMoreFiles()">
             </div>`;
      });
  }
-
-// Format size in nice format
-function niceSize(size) {
-    var i = 0;
-    var unit = ['B', 'KB', 'MB', 'GB'];
-    while(size >= 1024) {
-        size = Math.floor(size/1024);
-        i++;
-    }
-    if(i > unit.length) { // the file is too big
-        return 'TB+';
-    }
-    return size + ' ' + unit[i];
-}
-
-// Download the file
-function downloadItem(event) {
-    var item = event.currentTarget;
-    item.children[item.children.length - 1].style.display = 'block';
-}
 
 // Get suggestions from the server when searching for a file
 searchBar.addEventListener('input', function(event){
@@ -336,11 +302,10 @@ searchBar.addEventListener('input', function(event){
         }
         var output = '<ul>';
         for(var i=0; i<res.numberOfFiles; i++) {
-            output += `<li><a href="" data-file-id="${res.files[i]._id}" onclick="getFile(event)">${res.files[i].name}</a></li>`;
+            output += `<li><a href="" data-file-name="${res.files[i].name}" data-file-id="${res.files[i]._id}" onclick="getFile(event)">${res.files[i].name}</a></li>`;
         }
         suggestions.innerHTML = output + '</ul>';
         suggestions.style.display = 'block';
-        searchResult = res;
     });
 });
 
@@ -357,58 +322,49 @@ searchBar.addEventListener('keyup', function(event){
     }
     var fileName = this.value;
     this.blur();
-    var res = searchResult;
-    homeWindow.innerHTML = '';
-    for(var i=0; i<res.numberOfFiles; i++) {
-        homeWindow.innerHTML +=`
-            <div class="item">
-                <div class="item-header">
-                    <p>${res.files[i].name.substr(0, 30)}</p>
-                </div>
-                <div class="item-content">
-                    <div class="icon" style="background-image : url('API/getFileThumb?fileID=${res.files[i]._id}');"></div>
-                </div>
-                <div class="item-footer">
-                    <a class="button" href="API/getTheFile?fileID=${res.files[i]._id}" target="_self">download</a>
-                </div>
-            </div>`;
-    }
-    if(res.numberOfFiles != 0) homeWindow.innerHTML +=
-        `<div class="get-more-files">
-            <input type="button" class="button" value="load more" onclick="getMoreFiles(1, ${fileName})">
-        </div>`;
+    getFiles({skip : 0, fileName: fileName});
 });
 
 // Get single file from the server and display it
 function getFile(event) {
     event.preventDefault();
-    event.stopPropagation();
-    var fileId = event.currentTarget.dataset.fileId;
-    windowsSwitcher.show(homeTab, homeWindow);
-    request.get('getFile', {fileId : fileId}, function(res){
-        if(!res.success) {
-            console.log(res.error);
-            return;
-        }
-        homeWindow.innerHTML = '';
-        for(var i=0; i<result.numberOfFiles; i++) {
-            homeWindow.innerHTML +=`
-                <div class="item">
-                    <div class="item-header">
-                        <p>${res.files.name[i].substr(0, 30)}</p>
-                    </div>
-                    <div class="item-content">
-                        <div class="icon"></div>
-                    </div>
-                    <div class="item-footer">
-                        <a class="button" href="api/getTheFile?fileID=${res.files.id[i]}" target="_self">download</a>
-                    </div>
-                </div>`;
-        }
-    });
+    var fileID = event.currentTarget.dataset.fileId;
+    var fileName = event.currentTarget.dataset.fileName;
+    homeWindow.innerHTML =`
+        <div class="item">
+            <div class="item-header">
+                <p>${fileName.substr(0, 30)}</p>
+            </div>
+            <div class="item-content">
+                <div class="icon" style="background-image : url('API/getFileThumb?fileID=${fileID}');"></div>
+            </div>
+            <div class="item-footer">
+                <a class="button" href="API/getTheFile?fileID=${fileID}" target="_self">download</a>
+            </div>
+        </div>`;
 }
 
 // Show/hide the menu
 toggle.addEventListener('click', function(event){
     menu.style.display = (menu.style.display == 'block' ? '' : 'block');
 });
+
+// Format size in nice format
+function niceSize(size) {
+    var i = 0;
+    var unit = ['B', 'KB', 'MB', 'GB'];
+    while(size >= 1024) {
+        size = Math.floor(size/1024);
+        i++;
+    }
+    if(i > unit.length) { // the file is too big
+        return 'TB+';
+    }
+    return size + ' ' + unit[i];
+}
+
+// Show the home page
+homeTab.click();
+
+// Try to login
+doLogin();

@@ -1,6 +1,6 @@
 // Validate the email address
 exports.validEmail = function(email) {
-    var emailReg = /^[a-zA-Z0-9_]+([\.|\-]*[a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([\.|\-]*[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,3}$/;
+    var emailReg = /^[a-zA-Z0-9_]+([\.|\-]?[a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([\.|\-]?[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,3}$/;
     return emailReg.test(email);
 }
 
@@ -29,67 +29,17 @@ exports.validFileSize = function(fileSize) {
 
 // Validate the mime type
 exports.validFileType = function(fileType) {
-    var type = ['application/x-troff-msvideo',
-                'application/mac-binary',
-                'application/macbinary',
-                'application/octet-stream',
-                'application/x-binary',
-                'application/x-macbinary',
-                'application/x-bzip',
-                'application/x-bzip2',
-                'application/x-pointplus',
-                'application/msword',
-                'application/octet-stream',
-                'application/x-gzip',
-                'application/x-javascript',
-                'application/octet-stream',
-                'application/x-shockwave-flash',
-                'application/x-compressed',
-                'application/x-zip-compressed',
-                'application/zip',
-                'image/bmp',
-                'image/x-windows-bmp',
-                'image/gif',
-                'image/jpeg',
-                'image/pjpeg',
-                'image/jpeg',
-                'image/pjpeg',
-                'image/png',
-                'text/x-asm',
-                'text/asp',
-                'text/plain',
-                'text/x-c',
-                'text/plain',
-                'text/x-c',
-                'text/css',
-                'text/html',
-                'text/html',
-                'text/html',
-                'video/avi',
-                'video/msvideo',
-                'video/x-msvideo',
-                'video/quicktime',
-                'video/mpeg',
-                'video/x-mpeg',
-                'video/x-mpeq2a',
-                'video/mpeg',
-                'video/x-mpeg',
-                'video/mpeg',
-                'video/mpeg',
-                'audio/mpeg',
-                'audio/x-mpeg',
-                'audio/mpeg3',
-                'audio/x-mpeg-3',
-                'audio/mpeg',
-                'audio/wav',
-                'audio/x-wav',
-                'multipart/x-gzip',
-                'multipart/x-zip'];
-    return (type.indexOf(fileType) == -1) ? false : true;
+    var typeReg = /^[\w]+([\.|\-]?[\w]+)*\/[\w]+([\.|\-|\+]?[\w]+)*$/;
+    return typeReg.test(fileType);
 }
 
 // Validate the object id
 exports.validObjectID = function(objectID) {
     objectIDReg = /^[a-fA-F0-9]{24}$/;
     return objectIDReg.test(objectID);
+}
+
+exports.validInteger = function(number) {
+    numberReg = /^[0-9]+$/;
+    return numberReg.test(number);
 }
