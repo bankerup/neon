@@ -1,0 +1,36 @@
+{
+  "name": "neon",
+  "version": "0.0.1",
+  "description": "Neon is an application for file hosting and sharing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bankerup/neon.git"
+  },
+  "keywords": [
+    "file",
+    "hosting",
+    "sharing",
+    "chunk",
+    "upload",
+    "download",
+    "neon",
+    "opensource"
+  ],
+  "author": "bankerup.me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bankerup/neon/issues"
+  },
+  "homepage": "https://github.com/bankerup/neon#readme",
+  "dependencies": {
+    "busboy": "^0.2.13",
+    "connect-mongodb-session": "^1.1.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "mongodb": "^2.1.18"
+  }
+}
