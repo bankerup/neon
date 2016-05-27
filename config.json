@@ -2,5 +2,6 @@
     "domain": "localhost",
     "databaseURL": "mongodb://localhost:27017/neon",
     "sessionStore": "mongodb://localhost:27017/neon",
-    "sessionSecret": "neonze7lji$k&)j=!&bqwd%5gk&8t_xql^gqwdk(_7d20n9k$9@c)ufy8_4m4"
+    "sessionSecret": "neonze7lji$k&)j=!&bqwd%5gk&8t_xql^gqwdk(_7d20n9k$9@c)ufy8_4m4",
+    "port": "8080"
 }

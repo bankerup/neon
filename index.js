@@ -347,6 +347,7 @@ neon.post('/API/addNewFile', (req, res) => {
                             var path = __dirname + '/filecenter/' + result.insertedId;
                             fs.open(path, 'w', function(err, fd) {
                                 if((err != null) || ((typeof fd) == 'undefined')) {
+                                    console.dir(err);
                                     res.send(JSON.stringify({
                                         success: false,
                                         error: 'File creation error'
@@ -829,6 +830,6 @@ neon.get('/API/getTheFileContent', (req, res) => {
 });
 
 // Start the server
-neon.listen(8080, () => {
-    console.log('Neon listening on port 8080');
+neon.listen(config.port, () => {
+    console.log('Neon listening on port ' + config.port);
 });
