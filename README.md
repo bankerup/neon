@@ -15,4 +15,4 @@ Neon is a file hosting and sharing script written by [bankerup.me](https://banke
    *  Users are not able to contact other users
    *  Captcha verification is not implemented
    *  Users are not able to pause the upload and resume it later
-   *  Email ownership confirmation is implemented
+   *  Email ownership confirmation is not implemented

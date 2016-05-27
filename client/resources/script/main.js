@@ -42,10 +42,25 @@ function Request() {
         connection.open('POST', `/${method}`);
         connection.send(formData);
         connection.onreadystatechange = function(event) {
-            if((this.readyState == 4) && (this.status == '200')) {
-                var result = JSON.parse(this.response);
-                callback(result);
+            if(this.readyState == 4) {
+                if(this.status == '200') {
+                    var result = JSON.parse(this.response);
+                    callback(result);
+                }
+                else {
+                    var result = {
+                        success: false,
+                        error: 'Server error status:' + this.status
+                    }
+                    callback(result);
+                }
             }
+        }
+        connection.ontimeout = function(event) {
+            console.log('Connection timed out. Try again in 3 seconds');
+            window.setTimeout(function(){
+                connection.send(formData);
+            }, 3000);
         }
     }
 
@@ -61,10 +76,25 @@ function Request() {
         connection.open('GET', `/${method}${uriData}`);
         connection.send();
         connection.onreadystatechange = function(event) {
-            if((this.readyState == 4) && (this.status == '200')) {
-                var result = JSON.parse(this.response);
-                callback(result);
+            if(this.readyState == 4) {
+                if(this.status == '200') {
+                    var result = JSON.parse(this.response);
+                    callback(result);
+                }
+                else {
+                    var result = {
+                        success: false,
+                        error: 'Server error status:' + this.status
+                    }
+                    callback(result);
+                }
             }
+        }
+        connection.ontimeout = function(event) {
+            console.log('Connection timed out. Try again in 3 seconds');
+            window.setTimeout(function(){
+                connection.send(formData);
+            }, 3000);
         }
     }
 }
@@ -94,13 +124,11 @@ var WindowsSwitcher = function(currentWindow) {
 var windowsSwitcher = new WindowsSwitcher(homeWindow);
 
 homeTab.addEventListener('click', function(event){
-    event.preventDefault();
     getFiles({skip : 0});
     windowsSwitcher.show(homeWindow);
 });
 
 aboutTab.addEventListener('click', function(event) {
-    event.preventDefault();
     windowsSwitcher.show(aboutWindow);
 });
 
@@ -108,9 +136,10 @@ userTab.addEventListener('click', function(event) {
     event.stopPropagation();
     if(userLoggedin) {
         userMenu.setAttribute('style', 'display : block');
-        return;
     }
-    windowsSwitcher.show(loginWindow);
+    else {
+        windowsSwitcher.show(loginWindow);
+    }
 });
 
 registerTab.addEventListener('click', function(event) {
@@ -119,16 +148,15 @@ registerTab.addEventListener('click', function(event) {
 });
 
 uploadTab.addEventListener('click', function(event){
-    event.preventDefault();
-    if(!userLoggedin) {
-        windowsSwitcher.show(loginWindow);
-        return;
+    if(userLoggedin) {
+        windowsSwitcher.show(uploadWindow);
     }
-    windowsSwitcher.show(uploadWindow);
+    else {
+        windowsSwitcher.show(loginWindow);
+    }
 });
 
 logoutTab.addEventListener('click', function(event){
-    event.preventDefault();
     doLogout();
 });
 
@@ -208,6 +236,10 @@ function doLogin() {
 // Log the user out
 function doLogout() {
     request.get('API/userLogout', {}, function(res){
+        if(!res.success) {
+            console.log(res.error);
+            return;
+        }
         userLoggedin = false;
         userID = '';
         userName = '';
@@ -237,7 +269,7 @@ function getFiles(options) {
                         <div class="icon" style="background-image : url('API/getFileThumb?fileID=${res.files[i]._id}');"></div>
                     </div>
                     <div class="item-footer">
-                        <a class="button" href="API/getTheFile?fileID=${res.files[i]._id}" target="_self">download</a>
+                        <a class="button" href="API/getTheFileContent?fileID=${res.files[i]._id}" target="_self">download</a>
                     </div>
                 </div>`;
         }
@@ -277,7 +309,7 @@ function getFiles(options) {
              itemFooter.setAttribute('class', 'item-footer');
              var downloadAnchor = document.createElement("a");
              downloadAnchor.setAttribute('class', 'button');
-             downloadAnchor.setAttribute('href', `API/getTheFile?fileID=${res.files[i]._id}`);
+             downloadAnchor.setAttribute('href', `API/getTheFileContent?fileID=${res.files[i]._id}`);
              downloadAnchor.setAttribute('target', '_self');
              downloadAnchor.appendChild(document.createTextNode('Download'));
              itemFooter.appendChild(downloadAnchor);
@@ -339,7 +371,7 @@ function getFile(event) {
                 <div class="icon" style="background-image : url('API/getFileThumb?fileID=${fileID}');"></div>
             </div>
             <div class="item-footer">
-                <a class="button" href="API/getTheFile?fileID=${fileID}" target="_self">download</a>
+                <a class="button" href="API/getTheFileContent?fileID=${fileID}" target="_self">download</a>
             </div>
         </div>`;
 }
