@@ -769,7 +769,7 @@ neon.get('/API/getFileThumb', (req, res) => {
 });
 
 // Download the file
-neon.get('/API/getTheFile', (req, res) => {
+neon.get('/API/getTheFileContent', (req, res) => {
     if((typeof req.session.userID) == 'undefined') {
         res.send(JSON.stringify({
             success: false,
