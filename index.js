@@ -450,6 +450,8 @@ neon.post('/API/appendData', (req, res) => {
                             }
                             // The user doesn't own this file
                             else if (result.owner.id != req.session.userID.id) {
+                                console.log(result.owner);
+                                console.log(req.session.userID);
                                 res.send(JSON.stringify({
                                     success: false,
                                     error: 'Insufficient privileges'
