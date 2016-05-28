@@ -76,7 +76,7 @@ function FileUploader() {
                     sentForProgressbar += (event.loaded - sentBySender);
                     var percent = Math.min(Math.ceil(sentForProgressbar/total*100),100);
                     item.children[0].children[0].setAttribute("style", "width: " + percent + "%; max-width: 100%;")
-                    sentBysender = event.loaded;
+                    sentBySender = event.loaded;
                 });
                 mySender.send = function () {
                     if(!finished){
