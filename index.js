@@ -481,7 +481,7 @@ neon.post('/API/appendData', (req, res) => {
                                                 }));
                                             }
                                             else {
-                                                fs.write(fd, data, 0, data.length, position, function(err, written, buffer){
+                                                fs.write(fd, data, 0, data.length, parseInt(position), function(err, written, buffer){
                                                     if(err != null) {
                                                         res.send(JSON.stringify({
                                                             success: false,
