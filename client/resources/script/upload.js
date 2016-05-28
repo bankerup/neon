@@ -57,8 +57,8 @@ function FileUploader() {
             var item = document.getElementById('file' + fileUploader.currentFile);
             const chunkSize = 1024*1024;
             var myData = myFile.result;
-            var sended = 0;
-            var sendedForProgressbar = 0;
+            var sent = 0;
+            var sentForProgressbar = 0;
             var total = myData.byteLength;
             var finished = false;
             var activeThreads = 0;
@@ -73,25 +73,25 @@ function FileUploader() {
                     mySender.send();
                 });
                 mySender.sender.upload.addEventListener('progress', function(event) {
-                    sendedForProgressbar += (event.loaded - sentBySender);
-                    var percent = Math.min(Math.ceil(sendedForProgressbar/total*100),100);
+                    sentForProgressbar += (event.loaded - sentBySender);
+                    var percent = Math.min(Math.ceil(sentForProgressbar/total*100),100);
                     item.children[0].children[0].setAttribute("style", "width: " + percent + "%; max-width: 100%;")
-                    sentbysender = event.loaded;
+                    sentBysender = event.loaded;
                 });
                 mySender.send = function () {
                     if(!finished){
                         activeThreads++;
-                        var myChunk = new Blob([myData.slice(sended, sended + chunkSize)], {type: 'application/bin'});
+                        var myChunk = new Blob([myData.slice(sent, sent + chunkSize)], {type: 'application/bin'});
                         var myFormData = new FormData;
                         myFormData.append('data', myChunk);
                         myFormData.append('size', myChunk.size);
-                        myFormData.append('position', sended);
+                        myFormData.append('position', sent);
                         myFormData.append('id', id);
                         // the place to send the data
                         mySender.sender.open('POST', 'API/appendData');
                         mySender.sender.send(myFormData);
-                        sended += chunkSize;
-                        if(sended >= total){
+                        sent += chunkSize;
+                        if(sent >= total){
                             finished = true;
                         }
                     }
