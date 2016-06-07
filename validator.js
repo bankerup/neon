@@ -1,3 +1,7 @@
+// Copyright (c) 2016 bankerup.me
+// The MIT License (MIT)
+// A simple validation module
+
 // Validate the email address
 exports.validEmail = function(email) {
     var emailReg = /^[a-zA-Z0-9_]+([\.|\-]?[a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([\.|\-]?[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,3}$/;
@@ -18,7 +22,7 @@ exports.validPassword = function(password) {
 // Validate the file name
 exports.validFileName = function(fileName) {
     var fileNameReg = /[\/\?\%\*\:\"\>\<\|\\]+/;
-    return !fileNameReg.test(fileName);
+    return !fileNameReg.test(fileName) && (fileName.length > 0);
 }
 
 // Validate the size
