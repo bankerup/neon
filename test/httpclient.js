@@ -76,12 +76,13 @@ var formData = function(data, boundary) {
         body.append('--' + boundary + crlf);
         if(item == 'file') {
           body.append(`Content-Disposition: form-data; name="${item}"; filename="blob"` + crlf);
-          body.append('Content-Type: application/bin' + crlf + crlf);
+          body.append(`Content-Type: ${data[item].type}` + crlf + crlf);
+          body.append(data[item].data).append(crlf);
         }
         else {
           body.append(`Content-Disposition: form-data; name="${item}"` + crlf + crlf);
+          body.append(data[item]).append(crlf);
         }
-        body.append(data[item]).append(crlf);
     }
     body.append('--' + boundary + '--');
     return body.data;

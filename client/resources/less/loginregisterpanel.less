@@ -1,0 +1,64 @@
+#login-panel,
+#register-panel {
+  background-color: @text-color;
+  border-color: @border-color;
+  border-width: 1px;
+  border-style: solid;
+  width: 320px;
+  margin: 30px auto;
+  padding: 30px 0;
+  input[type="text"], input[type="password"] {
+    width: 278px;
+    height: 50px;
+    margin: 5px 20px;
+    border-style: solid;
+    border-color: @border-color;
+    border-width: 1px;
+    background-color: @background-color;
+    font-size: 16px;
+    font-weight: 500;
+    color: @dark-text-color;
+    padding: 0 16px;
+    &:focus {
+      outline-style: none;
+      outline-width: 0;
+      border-color: @dark-text-color;
+      background-color: @text-color;
+    }
+  }
+  .warning {
+    width: 278px;
+    margin: 5px 20px;
+    border-style: solid;
+    border-color: @warning-border-color;
+    border-width: 1px;
+    background-color: @warning-background-color;
+    font-size: 16px;
+    font-weight: 500;
+    color: @warning-border-color;
+    padding: 15px 16px;
+    display: none;
+  }
+  input[type="button"] {
+    width: 278px;
+    height: 50px;
+    margin: 5px 20px;
+  }
+}
+
+#login-panel {
+  display: none;
+  .register {
+    width: 278px;
+    margin: 0 20px;
+    margin-top: 20px;
+    border-top-style: solid;
+    border-top-color: @border-color;
+    border-top-width: 1px;
+    font-size: 12px;
+  }
+}
+
+#register-panel {
+  display: none;
+}

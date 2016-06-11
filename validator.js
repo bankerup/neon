@@ -1,5 +1,5 @@
 // Copyright (c) 2016 bankerup.me
-// The MIT License (MIT)
+// License (MIT)
 // A simple validation module
 
 // Validate the email address
@@ -43,7 +43,20 @@ exports.validObjectID = function(objectID) {
     return objectIDReg.test(objectID);
 }
 
+// Validate integers
 exports.validInteger = function(number) {
     numberReg = /^[0-9]+$/;
     return numberReg.test(number);
+}
+
+// Validate the image type
+exports.validImageType = function(fileType) {
+    var typeReg = /^image\/[\w]+([\.|\-|\+]?[\w]+)*$/;
+    return typeReg.test(fileType);
+}
+
+// Validate the user bio
+exports.validBio = function(bio) {
+    var bioReg = /^[a-zA-Z0-9\ \,\.\!\?\'\"]*$/;
+    return bioReg.test(bio);
 }

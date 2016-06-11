@@ -1,5 +1,5 @@
 // Copyright (c) 2016 bankerup.me
-// The MIT License (MIT)
+// License (MIT)
 // Neon: File hosting and sharing script
 
 // Dependencies
@@ -63,6 +63,7 @@ neon.use(function(req, res, next){
         req.noOfParameters = 0;
         req.file = new Tinybuffer.Buffer();
         req.noOfFiles = 0;
+        req.mimetype = '';
         try {
             var busboy = new Busboy({
                 headers: req.headers,
@@ -82,6 +83,7 @@ neon.use(function(req, res, next){
                 });
                 file.on('end', function(){
                     req.noOfFiles++;
+                    req.mimetype = mimetype;
                 });
             });
             busboy.on('finish', function(){
@@ -233,6 +235,7 @@ neon.get('/API/getUserInfo', (req, res, next) => {
             success: true,
             id: result._id.str,
             name: result.name,
+            bio: ((typeof result.bio) == 'undefined')?'':result.bio,
             registrationDate: result.registrationDate,
             lastLoginDate: result.lastLoginDate
         });
@@ -242,15 +245,43 @@ neon.get('/API/getUserInfo', (req, res, next) => {
 
 // The user avatar
 neon.get('/API/getUserAvatar', (req, res, next) => {
-    var path = __dirname + '/avatar/default.png';
-    fs.readFile(path, function(err, data){
-        if(err != null) {
-            return next(new Error('Data retrieval error'));
+  if((typeof req.session.userID) == 'undefined') {
+    // Not logged in does not have a profile photo
+    return next();
+  }
+  fs.access(__dirname + '/avatar/' + req.session.userID, fs.R_OK, function(err) {
+    if(err != null) {
+      // Does not have profile photo
+      return next();
+    }
+    neonDB.collection('users').findOne({_id: {$eq: req.session.userID}},{avatar: 1},function(err, result) {
+      if((err != null) || (result ==null)) {
+        // Database error
+        return next();
+      }
+      fs.readFile(__dirname + '/avatar/' + req.session.userID, function(err, data){
+        if((err != null) || (data == null)) {
+          // Error reading the file
+          return next();
         }
-        res.setHeader('Content-Type', 'image/png');
+        res.setHeader('Content-Type', result.avatar);
         res.setHeader('Content-Length', data.length);
         res.send(data);
+      });
     });
+  });
+});
+
+neon.get('/API/getUserAvatar', (req, res, next) => {
+  var path = __dirname + '/avatar/default.png';
+  fs.readFile(path, function(err, data){
+    if(err != null) {
+        return next(new Error('Data retrieval error'));
+    }
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Content-Length', data.length);
+    res.send(data);
+  });
 });
 
 // Add new file to the Database
@@ -287,7 +318,8 @@ neon.post('/API/addNewFile', (req, res, next) => {
     // Add the file to the database
     neonDB.collection('files').insertOne({
         name: req.post['name'],
-        size: req.post['size'],
+        size: parseInt(req.post['size']),
+        download: 0,
         type: req.post['type'],
         owner: req.session.userID,
         creationDate: Date.now(),
@@ -470,10 +502,10 @@ neon.get('/API/getFiles', (req, res, next) => {
         if(!validator.validFileName(req.query.fileName)) {
             return next(new Error('Invalid file name'));
         }
-        return neonDB.collection('files').find({name : {$regex : `.*${req.query.fileName}.*`, $options : 'i'}}, callback);
+        return neonDB.collection('files').find({name : {$regex : `.*${req.query.fileName}.*`, $options : 'i'}, status: "complete"}, callback);
     }
     // Search for all files
-    neonDB.collection('files').find(callback);
+    neonDB.collection('files').find({status: "complete"}, callback);
 });
 
 // Get the thumb/icon for the file
@@ -535,12 +567,149 @@ neon.get('/API/getTheFileContent', (req, res, next) => {
         if(result == null) {
             return next(new Error('File not found'));
         }
+        // Increment the download count for the files
+        neonDB.collection('files').updateOne({_id : {$eq : new ObjectID(req.query.fileID)}}, {$inc: {download: 1}});
         var path = __dirname + '/filecenter/' + req.query.fileID;
         var file = fs.createReadStream(path, {buffer : 1024 * 1024});
         res.setHeader('Content-Type', result.type);
         res.setHeader('Content-Length', result.size);
-        res.setHeader('Content-Disposition', 'attachment; filename=' + result.name);
+        res.setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' + encodeURIComponent(result.name));
         file.pipe(res);
+    });
+});
+
+// Update user avatar
+neon.post('/API/updateAvatar', function(req, res, next){
+  // The user must be logged in
+  if((typeof req.session.userID) == 'undefined'){
+    return next(new Error('Not logged in'));
+  }
+  // Should receive image file
+  if(req.noOfFiles != 1) {
+    return next(new Error('No image file was provided'));
+  }
+  // Should receive image file
+  if(!validator.validImageType(req.mimetype)) {
+    return next(new Error('Not an image'));
+  }
+  neonDB.collection('users').updateOne({
+    _id: {$eq: req.session.userID}
+  },
+  {
+    $set: {avatar: req.mimetype}
+  },
+  function(err, result){
+    if((err != null || result == null)){
+      return next(new Error('DB error'));
+    }
+    var dst = fs.createWriteStream(__dirname + '/avatar/' + req.session.userID);
+    dst.write(req.file.data, function(err) {
+      if(err != null){
+        next(new Error('Error saving the image'));
+      }
+      res.json({
+        success: true
+      });
+    });
+  });
+});
+
+// Update user bio
+neon.post('/API/updateBio', function(req, res, next){
+  // The user must be logged in
+  if((typeof req.session.userID) == 'undefined'){
+    return next(new Error('Not logged in'));
+  }
+  // Should receive one parameter
+  if(req.noOfParameters != 1) {
+    return next(new Error('Parameters mismatch'));
+  }
+  // Check for the existance of the parameter
+  if((typeof req.post['bio']) == 'undefined'){
+    return next(new Error('Missing bio'));
+  }
+  // Validate the bio
+  if(!validator.validBio(req.post['bio'])) {
+    return next(new Error('The bio contains invalid characters'));
+  }
+  neonDB.collection('users').updateOne({
+    _id: {$eq: req.session.userID}
+  },
+  {
+    $set: {bio: req.post['bio']}
+  },
+  function(err, result){
+    if((err != null || result == null)){
+      return next(new Error('DB error'));
+    }
+    res.json({
+      success: true
+    });
+  });
+});
+
+// Get user's files
+neon.get('/API/myFiles', (req, res, next) => {
+  // The user must be logged in
+  if((typeof req.session.userID) == 'undefined'){
+    return next(new Error('Not logged in'));
+  }
+  neonDB.collection('files').find({owner : req.session.userID, status: "complete"}, {status: 0, owner: 0}, function(err, cursor){
+      if((err != null) || (cursor == null)) {
+          return next(new Error('Error while searching for files'));
+      }
+      cursor.sort({creationDate : -1}).toArray(function(err, result){
+          if((err != null) || (result == null)) {
+              return next(new Error('Error getting the files'));
+          }
+          res.json({
+              success: true,
+              numberOfFiles: result.length,
+              files: result
+          });
+      });
+  });
+});
+
+// Delete file
+neon.post('/API/deleteFile', (req, res, next) => {
+    // Check if the user is logged in
+    if((typeof req.session.userID) == 'undefined') {
+        return next(new Error('Not logged in'));
+    }
+    // This method should get one parameter which is the file id
+    if(req.noOfParameters != 1) {
+        return next(new Error('Parameters mismatch'));
+    }
+    // Check the existance of parameters
+    if((typeof req.post['id']) == 'undefined') {
+        return next(new Error('Missing ID'));
+    }
+    // Validate the id
+    if(!validator.validObjectID(req.post['id'])) {
+        return next(new Error('Invalid ID'));
+    }
+    neonDB.collection('files').findOne({_id: {$eq : new ObjectID(req.post['id'])}}, function(err, result) {
+        if((err != null) || (result == null)) {
+            return next(new Error('Data retrieval error'));
+        }
+        // The user doesn't own the file [SECURITY]
+        if(result.owner.id != req.session.userID.id) {
+            return next(new Error('You do not own this file'));
+        }
+        neonDB.collection('files').updateOne({
+            _id: new ObjectID(req.post['id'])
+        }, {
+            $set: {status: 'deleted'}
+        }, function(err, result){
+            if((err != null) || (result == null)) {
+                return next(new Error('Error while updating the data'));
+            }
+            res.json({
+                success: true
+            });
+            next();
+        });
     });
 });
 

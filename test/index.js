@@ -225,19 +225,19 @@ describe('Neon', function(){
             });
         });
         it('Should respond with "Missing id"', function(done){
-            httpclient.request('POST', url + 'API/appendData', {dummy: '', position: '', size: '', file: ''}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {dummy: '', position: '', size: '', file: {data: '', type: ''}}, cookie, function(res){
                 expect(res.responseJSON.error).to.equal('Missing id');
                 done();
             });
         });
         it('Should respond with "Missing position"', function(done){
-            httpclient.request('POST', url + 'API/appendData', {id: '', dummy: '', size: '', file: ''}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {id: '', dummy: '', size: '', file: {data: '', type: ''}}, cookie, function(res){
                 expect(res.responseJSON.error).to.equal('Missing position');
                 done();
             });
         });
         it('Should respond with "Missing size"', function(done){
-            httpclient.request('POST', url + 'API/appendData', {id: '', position: '', dummy: '', file: ''}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {id: '', position: '', dummy: '', file: {data: '', type: ''}}, cookie, function(res){
                 expect(res.responseJSON.error).to.equal('Missing size');
                 done();
             });
@@ -249,43 +249,43 @@ describe('Neon', function(){
             });
         });
         it('Should respond with "Invalid id"', function(done){
-            httpclient.request('POST', url + 'API/appendData', {id: '', position: '', size: '', file: ''}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {id: '', position: '', size: '', file: {data: '', type: ''}}, cookie, function(res){
                 expect(res.responseJSON.error).to.equal('Invalid id');
                 done();
             });
         });
         it('Should respond with "Invalid size"', function(done){
-            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '', position: '', file: ''}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '', position: '', file: {data: '', type: ''}}, cookie, function(res){
                 expect(res.responseJSON.error).to.equal('Invalid size');
                 done();
             });
         });
         it('Should respond with "Invalid position"', function(done){
-            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '', file: ''}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '', file: {data: '', type: ''}}, cookie, function(res){
                 expect(res.responseJSON.error).to.equal('Invalid position');
                 done();
             });
         });
         it('Should respond with "Data length mismatch"', function(done){
-            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '0', file: ''}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '0', file: {data: '', type: ''}}, cookie, function(res){
                 expect(res.responseJSON.error).to.equal('Data length mismatch');
                 done();
             });
         });
         it('Success should be true', function(done){
-            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '0', file: 'my-x1-name'}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '0', file: {data: '1234567890', type: 'text/plain'}}, cookie, function(res){
                 expect(res.responseJSON.success).to.equal(true);
                 done();
             });
         });
         it('Success should be true', function(done){
-            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '20', file: 'muhammed..'}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '20', file: {data: 'qwertyuiop', type: 'text/plain'}}, cookie, function(res){
                 expect(res.responseJSON.success).to.equal(true);
                 done();
             });
         });
         it('Success should be true', function(done){
-            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '10', file: '-x2-is-x3-'}, cookie, function(res){
+            httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '10', position: '10', file: {data: '-x2-is-x3-', type: 'text/plain'}}, cookie, function(res){
                 expect(res.responseJSON.success).to.equal(true);
                 done();
             });
@@ -293,7 +293,7 @@ describe('Neon', function(){
         it('Should respond with "Insufficient privileges"', function(done){
             httpclient.request('POST', url + 'API/userLogin', {email: 'me@user.com', password: '12345678'}, '', function(res){
                 expect(res.responseJSON.success).to.equal(true);
-                httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '0', position: '0', file: ''}, res.cookie, function(res){
+                httpclient.request('POST', url + 'API/appendData', {id: fileID, size: '0', position: '0', file: {data: '', type: ''}}, res.cookie, function(res){
                     expect(res.responseJSON.error).to.equal('Insufficient privileges');
                     done();
                 });
@@ -397,6 +397,64 @@ describe('Neon', function(){
         it('Should respond with a text file', function(done) {
             httpclient.request('GET', url + 'API/getTheFileContent', {fileID: fileID}, '', function(res){
                 expect(res.contentType).to.match(/text/);
+                done();
+            });
+        });
+    });
+    describe('API/updateAvatar', function() {
+        it('Should respond with "Not logged in"', function(done) {
+            httpclient.request('POST', url + 'API/updateAvatar', {}, '', function(res){
+                expect(res.responseJSON.error).to.equal('Not logged in');
+                done();
+            });
+        });
+        it('Should respond with "No image file was provided"', function(done) {
+            httpclient.request('POST', url + 'API/updateAvatar', {}, cookie, function(res){
+                expect(res.responseJSON.error).to.equal('No image file was provided');
+                done();
+            });
+        });
+        it('Should respond with "Not an image"', function(done) {
+            httpclient.request('POST', url + 'API/updateAvatar', {file: {data: '123abcd', type: 'text/plain'}}, cookie, function(res){
+                expect(res.responseJSON.error).to.equal('Not an image');
+                done();
+            });
+        });
+        it('Success should be true', function(done) {
+            httpclient.request('POST', url + 'API/updateAvatar', {file: {data: '123abcd', type: 'image/png'}}, cookie, function(res){
+                expect(res.responseJSON.success).to.equal(true);
+                done();
+            });
+        });
+    });
+    describe('API/updateBio', function() {
+        it('Should respond with "Not logged in"', function(done) {
+            httpclient.request('POST', url + 'API/updateBio', {}, '', function(res){
+                expect(res.responseJSON.error).to.equal('Not logged in');
+                done();
+            });
+        });
+        it('Should respond with "Parameters mismatch"', function(done) {
+            httpclient.request('POST', url + 'API/updateBio', {}, cookie, function(res){
+                expect(res.responseJSON.error).to.equal('Parameters mismatch');
+                done();
+            });
+        });
+        it('Should respond with "Missing bio"', function(done) {
+            httpclient.request('POST', url + 'API/updateBio', {dummy: ''}, cookie, function(res){
+                expect(res.responseJSON.error).to.equal('Missing bio');
+                done();
+            });
+        });
+        it('Should respond with "The bio contains invalid characters"', function(done) {
+            httpclient.request('POST', url + 'API/updateBio', {bio: '<code></code>'}, cookie, function(res){
+                expect(res.responseJSON.error).to.equal('The bio contains invalid characters');
+                done();
+            });
+        });
+        it('Success should be true', function(done) {
+            httpclient.request('POST', url + 'API/updateBio', {bio: 'I\'m user. Nice to meet you.'}, cookie, function(res){
+                expect(res.responseJSON.success).to.equal(true);
                 done();
             });
         });

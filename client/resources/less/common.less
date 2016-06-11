@@ -1,0 +1,87 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+
+// For icons
+@font-face {
+  font-family: 'Entypo';
+  src: url('../font/Entypo-webfont.woff') format('woff');
+}
+
+@font-family: 'Lora', serif;
+@background-color: #f2f4f4;
+@light-background-color: #f5f6f6;
+@border-color: #d7dcde;
+@text-color: #fff;
+@button-border-color: #449dc1;
+@button-background-color: #61b6e0;
+@button-hover-color: #6abae2;
+@button-active-color: #58b2de;
+@dark-text-color: #5e666e;
+@warning-border-color: #ff0000;
+@warning-background-color: #ffe5e5;
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: @font-family;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: @background-color;
+  overflow-y: scroll;
+}
+
+i {
+  font-style: normal;
+  font-family: 'Entypo';
+  cursor: default;
+}
+
+p {
+  cursor: default;;
+}
+
+input[type="button"],
+a.button, label.button, button.button {
+  border-width: 0px;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: @button-border-color;
+  background-color: @button-background-color;
+  cursor: pointer;
+  width: auto;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 4px 16px;
+  &, &:active, &:hover, &:visited {
+      outline-style: none;
+      outline-width: 0;
+      text-decoration: none;
+      color: @text-color;
+  }
+  &:hover {
+    background-color: @button-hover-color;
+  }
+  &:active{
+    background-color: @button-active-color;
+  }
+}
+
+a {
+  &, &:active, &:visited {
+    color: @dark-text-color;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+}

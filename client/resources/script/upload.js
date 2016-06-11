@@ -1,3 +1,7 @@
+// Copyright (c) 2016 bankerup.me
+// The MIT License (MIT)
+// Uploading script
+
 // The file uploader object
 function FileUploader() {
     var fileUploader = this;
@@ -30,7 +34,7 @@ function FileUploader() {
     }
     // Send the metadata of the file to the server
     fileUploader.sendMeta = function(file) {
-        request.post('API/addNewFile', {
+        app.request.post('API/addNewFile', {
             name: file.name,
             size: file.size,
             type: file.type
@@ -106,7 +110,9 @@ function FileUploader() {
                         request.send(myFormData);
                         request.onreadystatechange = function(event) {
                             if((this.readyState === 4) && (this.status === 200)) {
-                                setTimeout(fileUploader.startUploading(), 3000);
+                                item.children[0].style.display = 'none';
+                                item.children[2].style.display = 'block';
+                                setTimeout(fileUploader.startUploading(), 1500);
                             }
                         }
                     }
@@ -125,13 +131,14 @@ uploader = new FileUploader();
 document.addEventListener("dragover", function(event){
     event.preventDefault();
 });
-// Listen to the drop event so I can add the files to the list
 document.addEventListener("drop", function(event){
+    event.preventDefault();
+});
+// Listen to the drop event so I can add the files to the list
+upload.panel.addEventListener("drop", function(event){
     event.preventDefault();
     // Get the list of files
     var files = event.dataTransfer.files;
-    // A pointer to the list
-    var uploadWindow = document.getElementById("upload-window");
     // Loop through files
     // And add them to the table
     var order = uploader.files.length;
@@ -141,8 +148,28 @@ document.addEventListener("drop", function(event){
                             <div class="fill"></div>
                         </div>
                         <p class="name">${files[i].name}</p>
+                        <i class="complete">W</i>
                     </div>`;
-        uploadWindow.innerHTML += item;
+        upload.panel.children[2].innerHTML += item;
     }
     uploader.addFiles(files);
+});
+
+upload.addFiles.addEventListener('change', function(event){
+  // Get the list of files
+  var files = this.files;
+  // Loop through files
+  // And add them to the table
+  var order = uploader.files.length;
+  for(var i=0; i<files.length; i++) {
+      var item = `<div class="item" id="${"file" + (i + order)}">
+                      <div class="progress">
+                          <div class="fill"></div>
+                      </div>
+                      <p class="name">${files[i].name}</p>
+                      <i class="complete">W</i>
+                  </div>`;
+      upload.panel.children[2].innerHTML += item;
+  }
+  uploader.addFiles(files);
 });

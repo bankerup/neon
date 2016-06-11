@@ -1,0 +1,110 @@
+#myprofile-panel {
+  display: none;
+  position: relative;
+  margin: 20px auto;
+  border-color: @border-color;
+  border-width: 1px;
+  border-style: solid;
+  padding-bottom: 20px;
+  height: 500px;
+  background-color: @text-color;
+  >.header {
+    width: 100%;
+    height: 50px;
+    padding: 13px 20px;
+    >h2 {
+      font-size: 20px;
+      color: @dark-text-color;
+    }
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  #myprofile-panel {
+    width: 960px;
+    >.avatar {
+      position: relative;
+      width: 320px;
+      height: 450px;
+      padding: 20px;
+      border-right-style: solid;
+      border-color: @border-color;
+      border-right-width: 1px;
+      float: left;
+      #avatar-image {
+        position: relative;
+        float: left;
+        width: 280px;
+        height: 280px;
+        border-radius: 280px;
+        background-repeat: round;
+        background-image: url('/API/getUserAvatar');
+      }
+      >.change-avatar {
+        position: relative;
+        float: left;
+        width: 280px;
+        height: 50px;
+        margin-top: 20px;
+        #change-avatar {
+          display: none;
+        }
+        #change-avatar + label {
+          position: relative;
+          margin: 0 auto;
+          width: 160px;
+          height: 50px;
+          font-weight: 400;
+          padding: 12px;
+          padding-left: 50px;
+          display: block;
+          >i {
+            font-size: 48px;
+            position: absolute;
+            left: 15px;
+            top: 12px;
+          }
+        }
+      }
+    }
+    >.bio {
+      position: relative;
+      width: 638px;
+      height: 450;
+      float: right;
+      #bio-content {
+        width: 598px;
+        height: 280px;
+        outline: none;
+        margin: 20px;
+        background: #f2f4f4;
+        resize: none;
+        border-color: #d7dcde;
+        padding: 20px;
+        font-size: 24px;
+        color: #768089;
+      }
+      >.buttons {
+        width: 598px;
+        height: 50px;
+        margin-top: 0px;
+        #save-bio {
+          position: relative;
+          margin: 0 auto;
+          width: 160px;
+          height: 50px;
+          font-weight: 400;
+          padding: 12px;
+          padding-left: 40px;
+          display: block;
+          >i {
+            font-size: 48px;
+            left: 40px;
+            top: 12px;
+            position: absolute;
+          }
+        }
+      }
+    }
+  }
+}

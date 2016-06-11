@@ -1,0 +1,68 @@
+#myfiles-panel {
+  display: none;
+  position: relative;
+  margin: 20px auto;
+  border-color: @border-color;
+  border-width: 1px;
+  border-style: solid;
+  padding-bottom: 20px;
+  background-color: @text-color;
+  >.header {
+    width: 100%;
+    height: 50px;
+    padding: 13px 20px;
+    >h2 {
+      font-size: 20px;
+      color: @dark-text-color;
+    }
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  #myfiles-panel {
+    width: 960px;
+    .files {
+      width: 920px;
+      position: relative;
+      margin: 10px auto;
+      thead {
+        tr {
+          background-color: @dark-text-color;
+          font-size: 20px;
+          td {
+              font-weight: 700;
+              color: @text-color;
+              padding: 10px 10px;
+          }
+          td.name {
+            padding: 10px 15px;
+            border-top-left-radius: 5px;
+          }
+          td.delete {
+            border-top-right-radius: 5px;
+          }
+        }
+      }
+      tbody {
+        tr {
+          transition: background-color 0.5s;
+          &:hover {
+            background-color: @border-color;
+          }
+        }
+        td {
+          padding: 10px 10px;
+          font-size: 16;
+          color: @dark-text-color;
+          font-weight: 400;
+          border-bottom-style: solid;
+          border-bottom-width: 1px;
+          border-bottom-color: @border-color;
+        }
+        td.name {
+          padding: 10px 15px;
+        }
+      }
+    }
+  }
+}
