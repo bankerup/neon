@@ -49,6 +49,7 @@ var upload = {
   tab: getElement('upload-tab'),
   panel: getElement('upload-panel'),
   addFiles: getElement('add-files'),
+  addFilesButton: getElement('add-files-button'),
   clearFiles: getElement('clear-files')
 }
 var myprofile = {
@@ -56,7 +57,8 @@ var myprofile = {
   panel: getElement('myprofile-panel'),
   avatar: {
     image: getElement('avatar-image'),
-    change: getElement('change-avatar')},
+    change: getElement('change-avatar'),
+    button: getElement('change-avatar-button')},
   bio: {
     content: getElement('bio-content'),
     save: getElement('save-bio')}

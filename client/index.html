@@ -59,7 +59,7 @@
                 <li>Simple profile editor</li>
             </ul>
             <p>
-              Neon is a single page web application. The client side of Neon is written in Javascript, CSS, and HTML. The server side of Neon is written in Javascript (NodeJS).  
+              Neon is a single page web application. The client side of Neon is written in Javascript, CSS, and HTML. The server side of Neon is written in Javascript (NodeJS).
             </p>
             <p></p>
         </div>
@@ -69,7 +69,7 @@
             <div class="warning" id="login-warning">
                 <span class="message">Invalid credentials</span>
             </div>
-            <input type="button" value="login" id="login-button">
+            <button class="button" id="login-button"><i class="icon"></i> login</button>
             <div class="register">Not a member? <a href="" id="register-tab">register</a> from here.</div>
         </div>
         <div id="register-panel">
@@ -79,7 +79,7 @@
             <div class="warning" id="register-warning">
                 <span class="message">Invalid credentials</span>
             </div>
-            <input type="button" value="register" id="register-button">
+            <button class="button" id="register-button"><i class="icon"></i> register</button>
         </div>
         <div id="upload-panel">
             <div class="header">
@@ -87,26 +87,25 @@
             </div>
             <div class="left-side">
               <input id="add-files" type="file" multiple/>
-              <label for="add-files" class="button"><i>w</i> Add files</label>
-              <label class="button" id="clear-files"><i>u</i> Clear files</label>
+              <button class="button" id="add-files-button"><i class="icon plus"></i> add files</button>
+              <button class="button" id="clear-files"><i class="icon refresh"></i> clear</button>
             </div>
-            <div class="right-side"></div>
+            <div class="right-side">
+            </div>
         </div>
         <div id="myprofile-panel">
           <div class="header">
             <h2 class="title">My profile</h2>
           </div>
-          <div class="avatar">
-            <div id="avatar-image"></div>
-            <div class="change-avatar">
+          <div class="content">
+            <div class="avatar">
+              <div id="avatar-image"></div>
               <input type="file" id="change-avatar">
-              <label for="change-avatar" class="button"><i>h</i> Change</label>
+              <button id="change-avatar-button" class="button"><i class="icon"></i> change</button>
             </div>
-          </div>
-          <div class="bio">
-            <textarea id="bio-content" placeholder="Write something about yourself"></textarea>
-            <div class="buttons">
-              <button id="save-bio" class="button"><i>W</i>Save</button>
+            <div class="bio">
+              <textarea id="bio-content" placeholder="Write something about yourself"></textarea>
+              <button id="save-bio" class="button"><i class="icon"></i> save</button>
             </div>
           </div>
         </div>
@@ -115,18 +114,6 @@
             <h2 class="title">My files</h2>
           </div>
           <div class="content">
-            <table class="files" cellspacing="0" cellpadding="0">
-              <thead>
-                <tr>
-                  <td class="name">name</td>
-                  <td class="size">size</td>
-                  <td class="type">type</td>
-                  <td class="delete">delete</td>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
           </div>
         </div>
         <script type="text/javascript" src="resources/script/ajax.js"></script>

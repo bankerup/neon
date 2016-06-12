@@ -7,6 +7,5 @@ Neon is a file hosting and sharing script written by [bankerup.me](https://banke
    *  Searching for files.
    *  User registration and login
    *  Responsive design
-   *  Simple Administrator panel
    *  Simple file manager
    *  Simple profile editor

@@ -79,7 +79,7 @@ app.getFiles = function(options) {
         }
         if(res.numberOfFiles != 0) home.panel.innerHTML +=
             `<div class="get-more-files">
-                <input type="button" class="button" value="load more" onclick="app.getMoreFiles()">
+                <button class="button" onclick="app.getMoreFiles()">load more</button>
             </div>`;
     });
 }
@@ -123,7 +123,7 @@ app.getMoreFiles = function() {
          home.panel.removeChild(home.panel.lastChild);
          if(res.numberOfFiles != 0) home.panel.innerHTML +=
             `<div class='get-more-files'>
-                <input type="button" class="button" value="load more" onclick="app.getMoreFiles()">
+                <button class="button" onclick="app.getMoreFiles()">load more</button>
             </div>`;
      });
  }

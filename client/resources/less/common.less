@@ -2,8 +2,8 @@
 
 // For icons
 @font-face {
-  font-family: 'Entypo';
-  src: url('../font/Entypo-webfont.woff') format('woff');
+  font-family: 'iconFont';
+  src: url('../font/fontawesome-webfont.woff') format('woff');
 }
 
 @font-family: 'Lora', serif;
@@ -39,18 +39,11 @@ body {
   overflow-y: scroll;
 }
 
-i {
-  font-style: normal;
-  font-family: 'Entypo';
-  cursor: default;
-}
-
 p {
   cursor: default;;
 }
 
-input[type="button"],
-a.button, label.button, button.button {
+.button {
   border-width: 0px;
   border-bottom-style: solid;
   border-bottom-width: 3px;
@@ -59,8 +52,11 @@ a.button, label.button, button.button {
   cursor: pointer;
   width: auto;
   font-size: 20px;
-  font-weight: 700;
-  padding: 4px 16px;
+  font-weight: 400;
+  float: left;
+  transform: background-color 0.5s;
+  width: 150px;
+  height: 50px;
   &, &:active, &:hover, &:visited {
       outline-style: none;
       outline-width: 0;
@@ -72,6 +68,23 @@ a.button, label.button, button.button {
   }
   &:active{
     background-color: @button-active-color;
+  }
+}
+
+i.icon {
+  font-family: 'iconFont';
+  font-style: normal;
+}
+
+i.plus {
+  &:before {
+    content: "\f0fe";
+  }
+}
+
+i.refresh {
+  &::before {
+    content: "\f021";
   }
 }
 

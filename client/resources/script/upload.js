@@ -79,7 +79,7 @@ function FileUploader() {
                 mySender.sender.upload.addEventListener('progress', function(event) {
                     sentForProgressbar += (event.loaded - sentBySender);
                     var percent = Math.min(Math.ceil(sentForProgressbar/total*100),100);
-                    item.children[0].children[0].setAttribute("style", "width: " + percent + "%; max-width: 100%;")
+                    item.children[1].children[0].children[0].setAttribute("style", "width: " + percent + "%; max-width: 100%;")
                     sentBySender = event.loaded;
                 });
                 mySender.send = function () {
@@ -110,8 +110,8 @@ function FileUploader() {
                         request.send(myFormData);
                         request.onreadystatechange = function(event) {
                             if((this.readyState === 4) && (this.status === 200)) {
-                                item.children[0].style.display = 'none';
-                                item.children[2].style.display = 'block';
+                                item.children[1].children[0].style.display = 'none';
+                                item.children[1].children[1].style.display = 'block';
                                 setTimeout(fileUploader.startUploading(), 1500);
                             }
                         }
@@ -143,12 +143,18 @@ upload.panel.addEventListener("drop", function(event){
     // And add them to the table
     var order = uploader.files.length;
     for(var i=0; i<files.length; i++) {
-        var item = `<div class="item" id="${"file" + (i + order)}">
-                        <div class="progress">
-                            <div class="fill"></div>
+        var item =  `<div class="item" id="${"file" + (i + order)}">
+                      <div class="name">
+                        <p>${files[i].name}</p>
+                      </div>
+                      <div class="progress">
+                        <div class="bar">
+                          <div class=fill></div>
                         </div>
-                        <p class="name">${files[i].name}</p>
-                        <i class="complete">W</i>
+                        <div class="complete">
+                          <p>uploaded</p>
+                        </div>
+                      </div>
                     </div>`;
         upload.panel.children[2].innerHTML += item;
     }
@@ -162,12 +168,18 @@ upload.addFiles.addEventListener('change', function(event){
   // And add them to the table
   var order = uploader.files.length;
   for(var i=0; i<files.length; i++) {
-      var item = `<div class="item" id="${"file" + (i + order)}">
-                      <div class="progress">
-                          <div class="fill"></div>
+      var item =  `<div class="item" id="${"file" + (i + order)}">
+                    <div class="name">
+                      <p>${files[i].name}</p>
+                    </div>
+                    <div class="progress">
+                      <div class="bar">
+                        <div class=fill></div>
                       </div>
-                      <p class="name">${files[i].name}</p>
-                      <i class="complete">W</i>
+                      <div class="complete">
+                        <p>uploaded</p>
+                      </div>
+                    </div>
                   </div>`;
       upload.panel.children[2].innerHTML += item;
   }

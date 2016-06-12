@@ -5,13 +5,12 @@
   border-color: @border-color;
   border-width: 1px;
   border-style: solid;
-  padding-bottom: 20px;
-  height: 500px;
   background-color: @text-color;
   >.header {
     width: 100%;
     height: 50px;
     padding: 13px 20px;
+    margin-bottom: 0px;
     >h2 {
       font-size: 20px;
       color: @dark-text-color;
@@ -19,90 +18,199 @@
   }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 960px) {
   #myprofile-panel {
     width: 960px;
-    >.avatar {
+    >.content {
       position: relative;
-      width: 320px;
-      height: 450px;
-      padding: 20px;
-      border-right-style: solid;
-      border-color: @border-color;
-      border-right-width: 1px;
-      float: left;
-      #avatar-image {
-        position: relative;
-        float: left;
-        width: 280px;
-        height: 280px;
-        border-radius: 280px;
-        background-repeat: round;
-        background-image: url('/API/getUserAvatar');
-      }
-      >.change-avatar {
-        position: relative;
-        float: left;
-        width: 280px;
-        height: 50px;
-        margin-top: 20px;
+      width: 100%;
+      height: auto;
+      padding-left: 320px;
+      >.avatar {
+        position: absolute;
+        width: 320px;
+        margin-left: -320px;
+        margin-top: 0px;
+        padding: 20px;
+        #avatar-image {
+          position: relative;
+          width: 100%;
+          height: 280px;
+          border-radius: 280px;
+          background-repeat: round;
+          background-image: url('/API/getUserAvatar');
+          margin-bottom: 20px;
+        }
         #change-avatar {
           display: none;
         }
-        #change-avatar + label {
+        #change-avatar-button {
           position: relative;
           margin: 0 auto;
           width: 160px;
           height: 50px;
-          font-weight: 400;
-          padding: 12px;
-          padding-left: 50px;
           display: block;
-          >i {
-            font-size: 48px;
-            position: absolute;
-            left: 15px;
-            top: 12px;
-          }
+          float: none;
         }
       }
-    }
-    >.bio {
-      position: relative;
-      width: 638px;
-      height: 450;
-      float: right;
-      #bio-content {
-        width: 598px;
-        height: 280px;
-        outline: none;
-        margin: 20px;
-        background: #f2f4f4;
-        resize: none;
-        border-color: #d7dcde;
+      >.bio {
+        position: relative;
+        width: 637px;
         padding: 20px;
-        font-size: 24px;
-        color: #768089;
-      }
-      >.buttons {
-        width: 598px;
-        height: 50px;
-        margin-top: 0px;
+        border-left-style: solid;
+        border-left-color: @border-color;
+        border-left-width: 1px;
+        #bio-content {
+          width: 100%;
+          height: 280px;
+          outline: none;
+          margin-bottom: 20px;
+          background: #f2f4f4;
+          resize: none;
+          border-color: #d7dcde;
+          padding: 20px;
+          font-size: 24px;
+          color: #768089;
+        }
         #save-bio {
           position: relative;
           margin: 0 auto;
           width: 160px;
           height: 50px;
-          font-weight: 400;
-          padding: 12px;
-          padding-left: 40px;
           display: block;
-          >i {
-            font-size: 48px;
-            left: 40px;
-            top: 12px;
-            position: absolute;
-          }
+          float: none;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  #myprofile-panel {
+    width: 640px;
+    >.content {
+      position: relative;
+      width: 100%;
+      height: auto;
+      >.avatar {
+        position: relative;;
+        width: 100%;
+        padding: 20px;
+        #avatar-image {
+          position: relative;
+          width: 280px;
+          height: 280px;
+          border-radius: 280px;
+          background-repeat: round;
+          background-image: url('/API/getUserAvatar');
+          margin: 0 auto;
+          display: block;
+          margin-bottom: 20px;
+        }
+        #change-avatar {
+          display: none;
+        }
+        #change-avatar-button {
+          position: relative;
+          margin: 0 auto;
+          width: 160px;
+          height: 50px;
+          display: block;
+          float: none;
+        }
+      }
+      >.bio {
+        position: relative;
+        width: 100%;
+        padding: 20px;
+        border-top-style: solid;
+        border-top-color: @border-color;
+        border-top-width: 1px;
+        #bio-content {
+          width: 100%;
+          height: 280px;
+          outline: none;
+          margin-bottom: 20px;
+          background: #f2f4f4;
+          resize: none;
+          border-color: #d7dcde;
+          padding: 20px;
+          font-size: 24px;
+          color: #768089;
+        }
+        #save-bio {
+          position: relative;
+          margin: 0 auto;
+          width: 160px;
+          height: 50px;
+          display: block;
+          float: none;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 639px) {
+  #myprofile-panel {
+    width: 320px;
+    >.content {
+      position: relative;
+      width: 100%;
+      height: auto;
+      >.avatar {
+        position: relative;;
+        width: 100%;
+        padding: 20px;
+        #avatar-image {
+          position: relative;
+          width: 280px;
+          height: 280px;
+          border-radius: 280px;
+          background-repeat: round;
+          background-image: url('/API/getUserAvatar');
+          margin: 0 auto;
+          display: block;
+          margin-bottom: 20px;
+        }
+        #change-avatar {
+          display: none;
+        }
+        #change-avatar-button {
+          position: relative;
+          margin: 0 auto;
+          width: 160px;
+          height: 50px;
+          display: block;
+          float: none;
+        }
+      }
+      >.bio {
+        position: relative;
+        width: 100%;
+        padding: 20px;
+        border-top-style: solid;
+        border-top-color: @border-color;
+        border-top-width: 1px;
+        #bio-content {
+          width: 100%;
+          height: 280px;
+          outline: none;
+          margin-bottom: 20px;
+          background: #f2f4f4;
+          resize: none;
+          border-color: #d7dcde;
+          padding: 20px;
+          font-size: 24px;
+          color: #768089;
+        }
+        #save-bio {
+          position: relative;
+          margin: 0 auto;
+          width: 160px;
+          height: 50px;
+          display: block;
+          float: none;
         }
       }
     }

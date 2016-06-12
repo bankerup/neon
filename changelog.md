@@ -1,9 +1,10 @@
 ## 0.1.0 (2016-06-11)
 
 Features:
-  - Simple Administrator panel
   - Simple profile editor
   - Simple file manager
+Code:
+  -some improvements
 
 ## 0.0.2 (2016-05-27)
 

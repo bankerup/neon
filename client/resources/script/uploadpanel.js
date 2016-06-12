@@ -9,8 +9,12 @@ upload.tab.addEventListener('click', function(event){
 
 upload.clearFiles.addEventListener('click', function(event) {
   for(item of upload.panel.children[2].children) {
-    if(item.children[2].style.display == 'block') {
+    if(item.children[1].children[1].style.display == 'block') {
       item.style.display = 'none';
     }
   }
+});
+
+upload.addFilesButton.addEventListener('click', function(event){
+  upload.addFiles.click();
 });

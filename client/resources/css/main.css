@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Lora);
 @font-face {
-  font-family: 'Entypo';
-  src: url('../font/Entypo-webfont.woff') format('woff');
+  font-family: 'iconFont';
+  src: url('../font/fontawesome-webfont.woff') format('woff');
 }
 * {
   margin: 0;
@@ -20,18 +20,10 @@ body {
   background-color: #f2f4f4;
   overflow-y: scroll;
 }
-i {
-  font-style: normal;
-  font-family: 'Entypo';
-  cursor: default;
-}
 p {
   cursor: default;
 }
-input[type="button"],
-a.button,
-label.button,
-button.button {
+.button {
   border-width: 0px;
   border-bottom-style: solid;
   border-bottom-width: 3px;
@@ -40,41 +32,36 @@ button.button {
   cursor: pointer;
   width: auto;
   font-size: 20px;
-  font-weight: 700;
-  padding: 4px 16px;
+  font-weight: 400;
+  float: left;
+  transform: background-color 0.5s;
+  width: 150px;
+  height: 50px;
 }
-input[type="button"],
-a.button,
-label.button,
-button.button,
-input[type="button"]:active,
-a.button:active,
-label.button:active,
-button.button:active,
-input[type="button"]:hover,
-a.button:hover,
-label.button:hover,
-button.button:hover,
-input[type="button"]:visited,
-a.button:visited,
-label.button:visited,
-button.button:visited {
+.button,
+.button:active,
+.button:hover,
+.button:visited {
   outline-style: none;
   outline-width: 0;
   text-decoration: none;
   color: #fff;
 }
-input[type="button"]:hover,
-a.button:hover,
-label.button:hover,
-button.button:hover {
+.button:hover {
   background-color: #6abae2;
 }
-input[type="button"]:active,
-a.button:active,
-label.button:active,
-button.button:active {
+.button:active {
   background-color: #58b2de;
+}
+i.icon {
+  font-family: 'iconFont';
+  font-style: normal;
+}
+i.plus:before {
+  content: "\f0fe";
+}
+i.refresh::before {
+  content: "\f021";
 }
 a,
 a:active,
@@ -464,11 +451,13 @@ a:hover {
   border-top-width: 1px;
   border-top-style: solid;
 }
-#home-panel .item .item-footer .button {
-  display: block;
-  width: 132px;
-  margin-left: 84px;
-  margin-top: 12px;
+#home-panel .item .item-footer > .button {
+  margin-left: 75px;
+  width: 150px;
+  height: 40px;
+  margin-top: 10px;
+  padding-top: 7px;
+  text-align: center;
 }
 #home-panel .get-more-files {
   display: block;
@@ -476,9 +465,11 @@ a:hover {
   float: left;
 }
 #home-panel .get-more-files .button {
+  position: relative;
   display: block;
   margin: 20px auto;
   width: 200px;
+  float: none;
 }
 @media screen and (min-width: 320px) and (max-width: 639px) {
   #home-panel {
@@ -580,65 +571,161 @@ a:hover {
   font-size: 20px;
   color: #5e666e;
 }
-#upload-panel > .right-side > .item {
-  position: relative;
-  width: 100%;
-  height: 50px;
-  background-color: #f5f6f6;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: #d7dcde;
-}
-#upload-panel > .right-side > .item > p {
-  position: absolute;
-  top: 15px;
-  left: 20px;
-  float: left;
-  font-size: 16px;
-  color: #5e666e;
-}
-#upload-panel > .right-side > .item > .progress {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  float: right;
-  height: 20px;
-  width: 200px;
-  background-color: #fff;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #d7dcde;
-}
-#upload-panel > .right-side > .item > .progress > .fill {
-  width: 0%;
-  height: 100%;
-  background-color: #d7dcde;
-}
-#upload-panel > .right-side > .item > .complete {
-  position: absolute;
-  top: 15px;
-  float: right;
-  right: 75px;
-  font-size: 48px;
-  color: #38bf4b;
-  display: none;
-}
 @media screen and (min-width: 320px) and (max-width: 639px) {
   #upload-panel {
     width: 320px;
+  }
+  #upload-panel > .header {
+    margin-bottom: 20px;
+  }
+  #upload-panel > .left-side {
+    position: relative;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    border-bottom-style: solid;
+    border-bottom-color: #d7dcde;
+    border-bottom-width: 1px;
+    padding-bottom: 20px;
+  }
+  #upload-panel > .left-side #add-files {
+    display: none;
+  }
+  #upload-panel > .left-side > .button {
+    position: relative;
+    float: none;
+    font-size: 20px;
+    width: 150px;
+  }
+  #upload-panel > .right-side {
+    width: 320px;
+    position: relative;
+  }
+  #upload-panel > .right-side > .item {
+    background-color: #f5f6f6;
+    width: 300px;
+    position: relative;
+    display: block;
+    margin: 10px auto;
+    height: auto;
+    min-height: 100px;
+    border: solid #d7dcde 1px;
+  }
+  #upload-panel > .right-side > .item > .name,
+  #upload-panel > .right-side > .item > .progress {
+    padding: 15px 20px;
+    width: 298px;
+    display: block;
+  }
+  #upload-panel > .right-side > .item > .name {
+    height: auto;
+    min-height: 50px;
+    border-bottom: solid #d7dcde 1px;
+  }
+  #upload-panel > .right-side > .item > .name > p {
+    color: #5e666e;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  #upload-panel > .right-side > .item > .progress {
+    height: 48px;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar {
+    height: 20px;
+    width: 258px;
+    border: solid black 1px;
+    border-color: #d7dcde;
+    background-color: #fff;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar > .fill {
+    width: 0%;
+    height: 100%;
+    background-color: #d7dcde;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete {
+    display: none;
+    height: 48px;
+    width: 100%;
+    text-align: center;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete > p {
+    color: green;
   }
 }
 @media screen and (min-width: 640px) and (max-width: 959px) {
   #upload-panel {
     width: 640px;
   }
-}
-@media screen and (min-width: 960px) and (max-width: 1279px) {
-  #upload-panel {
-    width: 960px;
+  #upload-panel > .left-side {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    border-bottom-style: solid;
+    border-bottom-color: #d7dcde;
+    border-bottom-width: 1px;
+  }
+  #upload-panel > .left-side #add-files {
+    display: none;
+  }
+  #upload-panel > .left-side > .button {
+    position: relative;
+    margin: 15px 5px;
+    float: none;
+    font-size: 20px;
+  }
+  #upload-panel > .right-side {
+    width: 100%;
+  }
+  #upload-panel > .right-side > .item {
+    background-color: #f5f6f6;
+    width: 100%;
+    position: relative;
+    display: block;
+    height: 50px;
+    border-bottom: solid #d7dcde 1px;
+  }
+  #upload-panel > .right-side > .item > .name,
+  #upload-panel > .right-side > .item > .progress {
+    padding: 15px 20px;
+    height: 100%;
+    display: block;
+    float: left;
+  }
+  #upload-panel > .right-side > .item > .name {
+    width: 440px;
+  }
+  #upload-panel > .right-side > .item > .name p {
+    color: #5e666e;
+    font-size: 16px;
+    max-height: 19px;
+    overflow: hidden;
+  }
+  #upload-panel > .right-side > .item > .progress {
+    width: 198px;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar {
+    height: 20px;
+    width: 150px;
+    border: solid #d7dcde 1px;
+    background-color: #fff;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar > .fill {
+    width: 0%;
+    height: 100%;
+    background-color: #d7dcde;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete {
+    display: none;
+    height: 48px;
+    width: 100%;
+    text-align: center;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete > p {
+    color: green;
   }
 }
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 960px) {
   #upload-panel {
     width: 960px;
   }
@@ -647,7 +734,6 @@ a:hover {
     width: 200px;
     left: 0px;
     top: 50px;
-    padding: 20px;
     bottom: 0px;
     border-right-style: solid;
     border-color: #d7dcde;
@@ -656,29 +742,67 @@ a:hover {
   #upload-panel > .left-side #add-files {
     display: none;
   }
-  #upload-panel > .left-side #add-files + label,
-  #upload-panel > .left-side #clear-files {
+  #upload-panel > .left-side > .button {
     position: relative;
-    width: 160px;
-    height: 50px;
-    font-weight: 400;
-    padding: 12px;
-    padding-left: 50px;
     display: block;
-    margin-bottom: 20px;
-  }
-  #upload-panel > .left-side #add-files + label > i,
-  #upload-panel > .left-side #clear-files > i {
-    font-size: 48px;
-    position: absolute;
-    left: 15px;
-    top: 10px;
+    margin: 10px auto;
+    float: none;
+    text-align: left;
+    padding-left: 20px;
+    font-size: 20px;
   }
   #upload-panel > .right-side {
     position: relative;
     left: 200px;
     width: 758px;
     height: auto;
+  }
+  #upload-panel > .right-side > .item {
+    background-color: #f5f6f6;
+    width: 100%;
+    position: relative;
+    display: block;
+    height: 50px;
+    border-bottom: solid #d7dcde 1px;
+  }
+  #upload-panel > .right-side > .item > .name,
+  #upload-panel > .right-side > .item > .progress {
+    padding: 15px 20px;
+    height: 100%;
+    display: block;
+    float: left;
+  }
+  #upload-panel > .right-side > .item > .name {
+    width: 550px;
+  }
+  #upload-panel > .right-side > .item > .name p {
+    color: #5e666e;
+    font-size: 16px;
+    max-height: 19px;
+    overflow: hidden;
+  }
+  #upload-panel > .right-side > .item > .progress {
+    width: 198px;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar {
+    height: 20px;
+    width: 150px;
+    border: solid #d7dcde 1px;
+    background-color: #fff;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar > .fill {
+    width: 0%;
+    height: 100%;
+    background-color: #d7dcde;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete {
+    display: none;
+    height: 198px;
+    width: 100%;
+    text-align: center;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete > p {
+    color: green;
   }
 }
 #login-panel,
@@ -730,11 +854,13 @@ a:hover {
   padding: 15px 16px;
   display: none;
 }
-#login-panel input[type="button"],
-#register-panel input[type="button"] {
+#login-panel .button,
+#register-panel .button {
   width: 278px;
   height: 50px;
   margin: 5px 20px;
+  display: block;
+  float: none;
 }
 #login-panel {
   display: none;
@@ -758,79 +884,68 @@ a:hover {
   border-color: #d7dcde;
   border-width: 1px;
   border-style: solid;
-  padding-bottom: 20px;
-  height: 500px;
   background-color: #fff;
 }
 #myprofile-panel > .header {
   width: 100%;
   height: 50px;
   padding: 13px 20px;
+  margin-bottom: 0px;
 }
 #myprofile-panel > .header > h2 {
   font-size: 20px;
   color: #5e666e;
 }
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 960px) {
   #myprofile-panel {
     width: 960px;
   }
-  #myprofile-panel > .avatar {
+  #myprofile-panel > .content {
     position: relative;
-    width: 320px;
-    height: 450px;
-    padding: 20px;
-    border-right-style: solid;
-    border-color: #d7dcde;
-    border-right-width: 1px;
-    float: left;
+    width: 100%;
+    height: auto;
+    padding-left: 320px;
   }
-  #myprofile-panel > .avatar #avatar-image {
+  #myprofile-panel > .content > .avatar {
+    position: absolute;
+    width: 320px;
+    margin-left: -320px;
+    margin-top: 0px;
+    padding: 20px;
+  }
+  #myprofile-panel > .content > .avatar #avatar-image {
     position: relative;
-    float: left;
-    width: 280px;
+    width: 100%;
     height: 280px;
     border-radius: 280px;
     background-repeat: round;
     background-image: url('/API/getUserAvatar');
+    margin-bottom: 20px;
   }
-  #myprofile-panel > .avatar > .change-avatar {
-    position: relative;
-    float: left;
-    width: 280px;
-    height: 50px;
-    margin-top: 20px;
-  }
-  #myprofile-panel > .avatar > .change-avatar #change-avatar {
+  #myprofile-panel > .content > .avatar #change-avatar {
     display: none;
   }
-  #myprofile-panel > .avatar > .change-avatar #change-avatar + label {
+  #myprofile-panel > .content > .avatar #change-avatar-button {
     position: relative;
     margin: 0 auto;
     width: 160px;
     height: 50px;
-    font-weight: 400;
-    padding: 12px;
-    padding-left: 50px;
     display: block;
+    float: none;
   }
-  #myprofile-panel > .avatar > .change-avatar #change-avatar + label > i {
-    font-size: 48px;
-    position: absolute;
-    left: 15px;
-    top: 12px;
-  }
-  #myprofile-panel > .bio {
+  #myprofile-panel > .content > .bio {
     position: relative;
-    width: 638px;
-    height: 450;
-    float: right;
+    width: 637px;
+    padding: 20px;
+    border-left-style: solid;
+    border-left-color: #d7dcde;
+    border-left-width: 1px;
   }
-  #myprofile-panel > .bio #bio-content {
-    width: 598px;
+  #myprofile-panel > .content > .bio #bio-content {
+    width: 100%;
     height: 280px;
     outline: none;
-    margin: 20px;
+    margin-bottom: 20px;
     background: #f2f4f4;
     resize: none;
     border-color: #d7dcde;
@@ -838,26 +953,143 @@ a:hover {
     font-size: 24px;
     color: #768089;
   }
-  #myprofile-panel > .bio > .buttons {
-    width: 598px;
-    height: 50px;
-    margin-top: 0px;
-  }
-  #myprofile-panel > .bio > .buttons #save-bio {
+  #myprofile-panel > .content > .bio #save-bio {
     position: relative;
     margin: 0 auto;
     width: 160px;
     height: 50px;
-    font-weight: 400;
-    padding: 12px;
-    padding-left: 40px;
     display: block;
+    float: none;
   }
-  #myprofile-panel > .bio > .buttons #save-bio > i {
-    font-size: 48px;
-    left: 40px;
-    top: 12px;
-    position: absolute;
+}
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  #myprofile-panel {
+    width: 640px;
+  }
+  #myprofile-panel > .content {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  #myprofile-panel > .content > .avatar {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+  }
+  #myprofile-panel > .content > .avatar #avatar-image {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 280px;
+    background-repeat: round;
+    background-image: url('/API/getUserAvatar');
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar {
+    display: none;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar-button {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
+  }
+  #myprofile-panel > .content > .bio {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    border-top-style: solid;
+    border-top-color: #d7dcde;
+    border-top-width: 1px;
+  }
+  #myprofile-panel > .content > .bio #bio-content {
+    width: 100%;
+    height: 280px;
+    outline: none;
+    margin-bottom: 20px;
+    background: #f2f4f4;
+    resize: none;
+    border-color: #d7dcde;
+    padding: 20px;
+    font-size: 24px;
+    color: #768089;
+  }
+  #myprofile-panel > .content > .bio #save-bio {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 639px) {
+  #myprofile-panel {
+    width: 320px;
+  }
+  #myprofile-panel > .content {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  #myprofile-panel > .content > .avatar {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+  }
+  #myprofile-panel > .content > .avatar #avatar-image {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 280px;
+    background-repeat: round;
+    background-image: url('/API/getUserAvatar');
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar {
+    display: none;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar-button {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
+  }
+  #myprofile-panel > .content > .bio {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    border-top-style: solid;
+    border-top-color: #d7dcde;
+    border-top-width: 1px;
+  }
+  #myprofile-panel > .content > .bio #bio-content {
+    width: 100%;
+    height: 280px;
+    outline: none;
+    margin-bottom: 20px;
+    background: #f2f4f4;
+    resize: none;
+    border-color: #d7dcde;
+    padding: 20px;
+    font-size: 24px;
+    color: #768089;
+  }
+  #myprofile-panel > .content > .bio #save-bio {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
   }
 }
 #myfiles-panel {
@@ -879,47 +1111,143 @@ a:hover {
   font-size: 20px;
   color: #5e666e;
 }
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 960px) {
   #myfiles-panel {
     width: 960px;
   }
-  #myfiles-panel .files {
-    width: 920px;
+  #myfiles-panel .content {
+    width: 958px;
+    height: auto;
     position: relative;
-    margin: 10px auto;
   }
-  #myfiles-panel .files thead tr {
-    background-color: #5e666e;
-    font-size: 20px;
-  }
-  #myfiles-panel .files thead tr td {
-    font-weight: 700;
-    color: #fff;
-    padding: 10px 10px;
-  }
-  #myfiles-panel .files thead tr td.name {
-    padding: 10px 15px;
-    border-top-left-radius: 5px;
-  }
-  #myfiles-panel .files thead tr td.delete {
-    border-top-right-radius: 5px;
-  }
-  #myfiles-panel .files tbody tr {
-    transition: background-color 0.5s;
-  }
-  #myfiles-panel .files tbody tr:hover {
-    background-color: #d7dcde;
-  }
-  #myfiles-panel .files tbody td {
-    padding: 10px 10px;
-    font-size: 16;
-    color: #5e666e;
-    font-weight: 400;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+  #myfiles-panel .content .item {
+    width: 958px;
+    position: relative;
     border-bottom-color: #d7dcde;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    height: 50px;
+    background-color: #f5f6f6;
+    transition: background-color 1s;
   }
-  #myfiles-panel .files tbody td.name {
-    padding: 10px 15px;
+  #myfiles-panel .content .item:hover {
+    background-color: #fff;
+  }
+  #myfiles-panel .content .item .name {
+    width: 758px;
+    display: block;
+    position: relative;
+    float: left;
+    height: 49px;
+    padding: 15px 20px;
+  }
+  #myfiles-panel .content .item .name > p {
+    color: #5e666e;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  #myfiles-panel .content .item .delete {
+    width: 200px;
+    display: block;
+    position: relative;
+    float: right;
+    height: 49px;
+    padding: 10px;
+  }
+  #myfiles-panel .content .item .delete .button {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  #myfiles-panel {
+    width: 640px;
+  }
+  #myfiles-panel .content {
+    width: 638px;
+    height: auto;
+    position: relative;
+  }
+  #myfiles-panel .content .item {
+    width: 638px;
+    position: relative;
+    border-bottom-color: #d7dcde;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    height: 50px;
+    background-color: #f5f6f6;
+    transition: background-color 1s;
+  }
+  #myfiles-panel .content .item:hover {
+    background-color: #fff;
+  }
+  #myfiles-panel .content .item .name {
+    width: 508px;
+    display: block;
+    position: relative;
+    float: left;
+    height: 49px;
+    padding: 15px 20px;
+  }
+  #myfiles-panel .content .item .name > p {
+    color: #5e666e;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  #myfiles-panel .content .item .delete {
+    width: 130px;
+    display: block;
+    position: relative;
+    float: right;
+    height: 49px;
+    padding: 10px;
+  }
+  #myfiles-panel .content .item .delete .button {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 639px) {
+  #myfiles-panel {
+    width: 320px;
+  }
+  #myfiles-panel .content {
+    width: 318px;
+    height: auto;
+    position: relative;
+  }
+  #myfiles-panel .content > .item {
+    background-color: #f5f6f6;
+    width: 300px;
+    position: relative;
+    display: block;
+    margin: 10px auto;
+    height: auto;
+    min-height: 100px;
+    border: solid #d7dcde 1px;
+  }
+  #myfiles-panel .content > .item > .name,
+  #myfiles-panel .content > .item > .delete {
+    padding: 15px 20px;
+    width: 298px;
+    display: block;
+  }
+  #myfiles-panel .content > .item > .name {
+    height: auto;
+    min-height: 50px;
+    border-bottom: solid #d7dcde 1px;
+  }
+  #myfiles-panel .content > .item > .name > p {
+    color: #5e666e;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  #myfiles-panel .content > .item > .delete {
+    padding: 5px 20px;
+    height: 48px;
+  }
+  #myfiles-panel .content > .item > .delete > .button {
+    width: 100%;
+    height: 100%;
   }
 }

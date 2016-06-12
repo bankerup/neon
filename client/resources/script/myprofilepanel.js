@@ -2,6 +2,10 @@ myprofile.tab.addEventListener('click', function(event){
     app.panelSwitcher.show(myprofile.panel);
 });
 
+myprofile.avatar.button.addEventListener('click', function(event){
+  myprofile.avatar.change.click();
+});
+
 myprofile.avatar.change.addEventListener('change', function(event) {
   app.request.file('API/updateAvatar', this.files[0], function(res){
     if(!res.success){
