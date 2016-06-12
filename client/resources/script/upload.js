@@ -1,3 +1,7 @@
+// Copyright (c) 2016 bankerup.me
+// The MIT License (MIT)
+// Uploading script
+
 // The file uploader object
 function FileUploader() {
     var fileUploader = this;
@@ -30,7 +34,7 @@ function FileUploader() {
     }
     // Send the metadata of the file to the server
     fileUploader.sendMeta = function(file) {
-        request.post('API/addNewFile', {
+        app.request.post('API/addNewFile', {
             name: file.name,
             size: file.size,
             type: file.type
@@ -57,8 +61,8 @@ function FileUploader() {
             var item = document.getElementById('file' + fileUploader.currentFile);
             const chunkSize = 1024*1024;
             var myData = myFile.result;
-            var sended = 0;
-            var sendedForProgressbar = 0;
+            var sent = 0;
+            var sentForProgressbar = 0;
             var total = myData.byteLength;
             var finished = false;
             var activeThreads = 0;
@@ -73,25 +77,25 @@ function FileUploader() {
                     mySender.send();
                 });
                 mySender.sender.upload.addEventListener('progress', function(event) {
-                    sendedForProgressbar += (event.loaded - sentBySender);
-                    var percent = Math.min(Math.ceil(sendedForProgressbar/total*100),100);
-                    item.children[0].children[0].setAttribute("style", "width: " + percent + "%; max-width: 100%;")
-                    sentbysender = event.loaded;
+                    sentForProgressbar += (event.loaded - sentBySender);
+                    var percent = Math.min(Math.ceil(sentForProgressbar/total*100),100);
+                    item.children[1].children[0].children[0].setAttribute("style", "width: " + percent + "%; max-width: 100%;")
+                    sentBySender = event.loaded;
                 });
                 mySender.send = function () {
                     if(!finished){
                         activeThreads++;
-                        var myChunk = new Blob([myData.slice(sended, sended + chunkSize)], {type: 'application/bin'});
+                        var myChunk = new Blob([myData.slice(sent, sent + chunkSize)], {type: 'application/bin'});
                         var myFormData = new FormData;
                         myFormData.append('data', myChunk);
                         myFormData.append('size', myChunk.size);
-                        myFormData.append('position', sended);
+                        myFormData.append('position', sent);
                         myFormData.append('id', id);
                         // the place to send the data
                         mySender.sender.open('POST', 'API/appendData');
                         mySender.sender.send(myFormData);
-                        sended += chunkSize;
-                        if(sended >= total){
+                        sent += chunkSize;
+                        if(sent >= total){
                             finished = true;
                         }
                     }
@@ -106,7 +110,9 @@ function FileUploader() {
                         request.send(myFormData);
                         request.onreadystatechange = function(event) {
                             if((this.readyState === 4) && (this.status === 200)) {
-                                setTimeout(fileUploader.startUploading(), 3000);
+                                item.children[1].children[0].style.display = 'none';
+                                item.children[1].children[1].style.display = 'block';
+                                setTimeout(fileUploader.startUploading(), 1500);
                             }
                         }
                     }
@@ -125,24 +131,57 @@ uploader = new FileUploader();
 document.addEventListener("dragover", function(event){
     event.preventDefault();
 });
-// Listen to the drop event so I can add the files to the list
 document.addEventListener("drop", function(event){
+    event.preventDefault();
+});
+// Listen to the drop event so I can add the files to the list
+upload.panel.addEventListener("drop", function(event){
     event.preventDefault();
     // Get the list of files
     var files = event.dataTransfer.files;
-    // A pointer to the list
-    var uploadWindow = document.getElementById("upload-window");
     // Loop through files
     // And add them to the table
     var order = uploader.files.length;
     for(var i=0; i<files.length; i++) {
-        var item = `<div class="item" id="${"file" + (i + order)}">
-                        <div class="progress">
-                            <div class="fill"></div>
+        var item =  `<div class="item" id="${"file" + (i + order)}">
+                      <div class="name">
+                        <p>${files[i].name}</p>
+                      </div>
+                      <div class="progress">
+                        <div class="bar">
+                          <div class=fill></div>
                         </div>
-                        <p class="name">${files[i].name}</p>
+                        <div class="complete">
+                          <p>uploaded</p>
+                        </div>
+                      </div>
                     </div>`;
-        uploadWindow.innerHTML += item;
+        upload.panel.children[2].innerHTML += item;
     }
     uploader.addFiles(files);
+});
+
+upload.addFiles.addEventListener('change', function(event){
+  // Get the list of files
+  var files = this.files;
+  // Loop through files
+  // And add them to the table
+  var order = uploader.files.length;
+  for(var i=0; i<files.length; i++) {
+      var item =  `<div class="item" id="${"file" + (i + order)}">
+                    <div class="name">
+                      <p>${files[i].name}</p>
+                    </div>
+                    <div class="progress">
+                      <div class="bar">
+                        <div class=fill></div>
+                      </div>
+                      <div class="complete">
+                        <p>uploaded</p>
+                      </div>
+                    </div>
+                  </div>`;
+      upload.panel.children[2].innerHTML += item;
+  }
+  uploader.addFiles(files);
 });

@@ -4,7 +4,7 @@
   "description": "Neon is an application for file hosting and sharing",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./tests/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "opensource"
   ],
   "author": "bankerup.me",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/bankerup/neon/issues"
   },

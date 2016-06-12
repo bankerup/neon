@@ -1,3 +1,7 @@
+// Copyright (c) 2016 bankerup.me
+// License (MIT)
+// A simple validation module
+
 // Validate the email address
 exports.validEmail = function(email) {
     var emailReg = /^[a-zA-Z0-9_]+([\.|\-]?[a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([\.|\-]?[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,3}$/;
@@ -18,7 +22,7 @@ exports.validPassword = function(password) {
 // Validate the file name
 exports.validFileName = function(fileName) {
     var fileNameReg = /[\/\?\%\*\:\"\>\<\|\\]+/;
-    return !fileNameReg.test(fileName);
+    return !fileNameReg.test(fileName) && (fileName.length > 0);
 }
 
 // Validate the size
@@ -39,7 +43,20 @@ exports.validObjectID = function(objectID) {
     return objectIDReg.test(objectID);
 }
 
+// Validate integers
 exports.validInteger = function(number) {
     numberReg = /^[0-9]+$/;
     return numberReg.test(number);
+}
+
+// Validate the image type
+exports.validImageType = function(fileType) {
+    var typeReg = /^image\/[\w]+([\.|\-|\+]?[\w]+)*$/;
+    return typeReg.test(fileType);
+}
+
+// Validate the user bio
+exports.validBio = function(bio) {
+    var bioReg = /^[a-zA-Z0-9\ \,\.\!\?\'\"]*$/;
+    return bioReg.test(bio);
 }

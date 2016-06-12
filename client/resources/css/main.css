@@ -1,4 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Lora);
+@font-face {
+  font-family: 'iconFont';
+  src: url('../font/fontawesome-webfont.woff') format('woff');
+}
 * {
   margin: 0;
   padding: 0;
@@ -14,9 +18,12 @@ body {
 }
 body {
   background-color: #f2f4f4;
+  overflow-y: scroll;
 }
-input[type="button"],
-a.button {
+p {
+  cursor: default;
+}
+.button {
   border-width: 0px;
   border-bottom-style: solid;
   border-bottom-width: 3px;
@@ -25,29 +32,36 @@ a.button {
   cursor: pointer;
   width: auto;
   font-size: 20px;
-  font-weight: 700;
-  padding: 4px 16px;
+  font-weight: 400;
+  float: left;
+  transform: background-color 0.5s;
+  width: 150px;
+  height: 50px;
 }
-input[type="button"],
-a.button,
-input[type="button"]:active,
-a.button:active,
-input[type="button"]:hover,
-a.button:hover,
-input[type="button"]:visited,
-a.button:visited {
+.button,
+.button:active,
+.button:hover,
+.button:visited {
   outline-style: none;
   outline-width: 0;
   text-decoration: none;
   color: #fff;
 }
-input[type="button"]:hover,
-a.button:hover {
+.button:hover {
   background-color: #6abae2;
 }
-input[type="button"]:active,
-a.button:active {
+.button:active {
   background-color: #58b2de;
+}
+i.icon {
+  font-family: 'iconFont';
+  font-style: normal;
+}
+i.plus:before {
+  content: "\f0fe";
+}
+i.refresh::before {
+  content: "\f021";
 }
 a,
 a:active,
@@ -216,222 +230,6 @@ a:hover {
   border-color: #5e666e;
   background-color: #5e666e;
 }
-#home-window {
-  margin: 0 auto;
-  display: none;
-}
-#home-window .item {
-  background-color: #fff;
-  border-color: #d7dcde;
-  border-width: 1px;
-  border-style: solid;
-  float: left;
-  width: 300px;
-  height: 375px;
-  margin: 10px;
-}
-#home-window .item .item-header {
-  position: absolute;
-  margin-left: 0;
-  margin-top: 0;
-  height: 59px;
-  width: 300px;
-  border-bottom-color: #d7dcde;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-}
-#home-window .item .item-header p {
-  font-size: 16px;
-  color: #5e666e;
-  padding: 20px;
-}
-#home-window .item .item-content {
-  position: absolute;
-  margin-left: 20px;
-  margin-top: 80px;
-  height: 215px;
-  width: 260px;
-  background-color: #f5f6f6;
-}
-#home-window .item .item-content .icon {
-  margin-left: 92px;
-  margin-top: 57px;
-  width: 75px;
-  height: 100px;
-  background-image: url('/API/getFileThumb');
-  background-size: 75px 100px;
-}
-#home-window .item .item-footer {
-  position: absolute;
-  margin-left: 0;
-  margin-top: 315px;
-  height: 59px;
-  width: 300px;
-  border-top-color: #d7dcde;
-  border-top-width: 1px;
-  border-top-style: solid;
-}
-#home-window .item .item-footer .button {
-  display: block;
-  width: 132px;
-  margin-left: 84px;
-  margin-top: 12px;
-}
-#home-window .get-more-files {
-  display: block;
-  position: relative;
-  float: left;
-}
-#home-window .get-more-files .button {
-  display: block;
-  margin: 20px auto;
-  width: 200px;
-}
-#about-window {
-  display: none;
-  background-color: #fff;
-  border-color: #d7dcde;
-  border-width: 1px;
-  border-style: solid;
-  font-size: 20px;
-  color: #5e666e;
-  margin: 20px auto;
-}
-#about-window > .header {
-  width: 100%;
-  height: 50px;
-  padding: 13px 20px;
-}
-#about-window > .header > p {
-  font-size: 20px;
-  color: #5e666e;
-}
-#about-window > p {
-  padding: 16px 32px;
-}
-#about-window ul {
-  padding: 0 48px;
-  list-style: disc;
-}
-#login-window,
-#register-window {
-  background-color: #fff;
-  border-color: #d7dcde;
-  border-width: 1px;
-  border-style: solid;
-  width: 320px;
-  margin: 30px auto;
-  padding: 30px 0;
-}
-#login-window input[type="text"],
-#register-window input[type="text"],
-#login-window input[type="password"],
-#register-window input[type="password"] {
-  width: 278px;
-  height: 50px;
-  margin: 5px 20px;
-  border-style: solid;
-  border-color: #d7dcde;
-  border-width: 1px;
-  background-color: #f2f4f4;
-  font-size: 16px;
-  font-weight: 500;
-  color: #5e666e;
-  padding: 0 16px;
-}
-#login-window input[type="text"]:focus,
-#register-window input[type="text"]:focus,
-#login-window input[type="password"]:focus,
-#register-window input[type="password"]:focus {
-  outline-style: none;
-  outline-width: 0;
-  border-color: #5e666e;
-  background-color: #fff;
-}
-#login-window .warning,
-#register-window .warning {
-  width: 278px;
-  margin: 5px 20px;
-  border-style: solid;
-  border-color: #ff0000;
-  border-width: 1px;
-  background-color: #ffe5e5;
-  font-size: 16px;
-  font-weight: 500;
-  color: #ff0000;
-  padding: 15px 16px;
-  display: none;
-}
-#login-window input[type="button"],
-#register-window input[type="button"] {
-  width: 278px;
-  height: 50px;
-  margin: 5px 20px;
-}
-#login-window {
-  display: none;
-}
-#login-window .register {
-  width: 278px;
-  margin: 0 20px;
-  margin-top: 20px;
-  border-top-style: solid;
-  border-top-color: #d7dcde;
-  border-top-width: 1px;
-  font-size: 12px;
-}
-#register-window {
-  display: none;
-}
-#upload-window {
-  display: none;
-  margin: 20px auto;
-  border-color: #d7dcde;
-  border-width: 1px;
-  border-style: solid;
-  padding-bottom: 20px;
-  min-height: 300px;
-  background-color: #fff;
-}
-#upload-window .header {
-  width: 100%;
-  height: 50px;
-  padding: 13px 20px;
-}
-#upload-window .header p {
-  font-size: 20px;
-  color: #5e666e;
-}
-#upload-window > .item {
-  width: 100%;
-  height: 50px;
-  background-color: #f5f6f6;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: #d7dcde;
-}
-#upload-window > .item p {
-  position: absolute;
-  margin: 15px 20px;
-  font-size: 16px;
-  color: #5e666e;
-}
-#upload-window > .item .progress {
-  position: absolute;
-  margin-left: 740px;
-  margin-top: 15px;
-  height: 20px;
-  width: 200px;
-  background-color: #fff;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #d7dcde;
-}
-#upload-window > .item .progress .fill {
-  width: 0%;
-  height: 100%;
-  background-color: #d7dcde;
-}
 @media screen and (min-width: 320px) and (max-width: 639px) {
   .header {
     left: 0;
@@ -478,18 +276,6 @@ a:hover {
     border-bottom-color: #d7dcde;
     border-bottom-width: 1px;
   }
-  #home-window {
-    width: 320px;
-  }
-  #home-window .get-more-files {
-    width: 320px;
-  }
-  #about-window {
-    width: 320px;
-  }
-  #upload-window {
-    width: 320px;
-  }
 }
 @media screen and (min-width: 640px) and (max-width: 959px) {
   .header {
@@ -529,18 +315,6 @@ a:hover {
     top: 80px;
     display: block;
   }
-  #home-window {
-    width: 640px;
-  }
-  #home-window .get-more-files {
-    width: 640px;
-  }
-  #about-window {
-    width: 640px;
-  }
-  #upload-window {
-    width: 640px;
-  }
 }
 @media screen and (min-width: 960px) and (max-width: 1279px) {
   .header {
@@ -578,18 +352,6 @@ a:hover {
     right: 70px;
     top: 15px;
     display: block;
-  }
-  #home-window {
-    width: 960px;
-  }
-  #home-window .get-more-files {
-    width: 960px;
-  }
-  #about-window {
-    width: 960px;
-  }
-  #upload-window {
-    width: 960px;
   }
 }
 @media screen and (min-width: 1280px) {
@@ -633,16 +395,859 @@ a:hover {
     margin-top: 15px;
     display: block;
   }
-  #home-window {
-    width: 1280px;
+}
+#home-panel {
+  margin: 0 auto;
+  display: none;
+}
+#home-panel .item {
+  background-color: #fff;
+  border-color: #d7dcde;
+  border-width: 1px;
+  border-style: solid;
+  float: left;
+  width: 300px;
+  height: 375px;
+  margin: 10px;
+}
+#home-panel .item .item-header {
+  position: absolute;
+  margin-left: 0;
+  margin-top: 0;
+  height: 59px;
+  width: 300px;
+  border-bottom-color: #d7dcde;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+#home-panel .item .item-header p {
+  font-size: 16px;
+  color: #5e666e;
+  padding: 20px;
+}
+#home-panel .item .item-content {
+  position: absolute;
+  margin-left: 20px;
+  margin-top: 80px;
+  height: 215px;
+  width: 260px;
+  background-color: #f5f6f6;
+}
+#home-panel .item .item-content .icon {
+  margin-left: 92px;
+  margin-top: 57px;
+  width: 75px;
+  height: 100px;
+  background-image: url('/API/getFileThumb');
+  background-size: 75px 100px;
+}
+#home-panel .item .item-footer {
+  position: absolute;
+  margin-left: 0;
+  margin-top: 315px;
+  height: 59px;
+  width: 300px;
+  border-top-color: #d7dcde;
+  border-top-width: 1px;
+  border-top-style: solid;
+}
+#home-panel .item .item-footer > .button {
+  margin-left: 75px;
+  width: 150px;
+  height: 40px;
+  margin-top: 10px;
+  padding-top: 7px;
+  text-align: center;
+}
+#home-panel .get-more-files {
+  display: block;
+  position: relative;
+  float: left;
+}
+#home-panel .get-more-files .button {
+  position: relative;
+  display: block;
+  margin: 20px auto;
+  width: 200px;
+  float: none;
+}
+@media screen and (min-width: 320px) and (max-width: 639px) {
+  #home-panel {
+    width: 320px;
   }
-  #home-window .get-more-files {
-    width: 1280px;
+  #home-panel .get-more-files {
+    width: 320px;
   }
-  #about-window {
+}
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  #home-panel {
+    width: 640px;
+  }
+  #home-panel .get-more-files {
+    width: 640px;
+  }
+}
+@media screen and (min-width: 960px) and (max-width: 1279px) {
+  #home-panel {
     width: 960px;
   }
-  #upload-window {
+  #home-panel .get-more-files {
     width: 960px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  #home-panel {
+    width: 1280px;
+  }
+  #home-panel .get-more-files {
+    width: 1280px;
+  }
+}
+#about-panel {
+  display: none;
+  background-color: #fff;
+  border-color: #d7dcde;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 20px;
+  color: #5e666e;
+  margin: 20px auto;
+}
+#about-panel > .header {
+  width: 100%;
+  height: 50px;
+  padding: 13px 20px;
+}
+#about-panel > .header > p {
+  font-size: 20px;
+  color: #5e666e;
+}
+#about-panel > p {
+  padding: 16px 32px;
+}
+#about-panel ul {
+  padding: 15px 48px;
+  list-style: disc;
+  margin: 0px 48px;
+  background-color: #f2f4f4;
+}
+@media screen and (min-width: 320px) and (max-width: 639px) {
+  #about-panel {
+    width: 320px;
+  }
+}
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  #about-panel {
+    width: 640px;
+  }
+}
+@media screen and (min-width: 960px) and (max-width: 1279px) {
+  #about-panel {
+    width: 960px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  #about-panel {
+    width: 960px;
+  }
+}
+#upload-panel {
+  display: none;
+  position: relative;
+  margin: 20px auto;
+  border-color: #d7dcde;
+  border-width: 1px;
+  border-style: solid;
+  padding-bottom: 20px;
+  min-height: 300px;
+  background-color: #fff;
+}
+#upload-panel .header {
+  width: 100%;
+  height: 50px;
+  padding: 13px 20px;
+}
+#upload-panel .header p {
+  font-size: 20px;
+  color: #5e666e;
+}
+@media screen and (min-width: 320px) and (max-width: 639px) {
+  #upload-panel {
+    width: 320px;
+  }
+  #upload-panel > .header {
+    margin-bottom: 20px;
+  }
+  #upload-panel > .left-side {
+    position: relative;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    border-bottom-style: solid;
+    border-bottom-color: #d7dcde;
+    border-bottom-width: 1px;
+    padding-bottom: 20px;
+  }
+  #upload-panel > .left-side #add-files {
+    display: none;
+  }
+  #upload-panel > .left-side > .button {
+    position: relative;
+    float: none;
+    font-size: 20px;
+    width: 150px;
+  }
+  #upload-panel > .right-side {
+    width: 320px;
+    position: relative;
+  }
+  #upload-panel > .right-side > .item {
+    background-color: #f5f6f6;
+    width: 300px;
+    position: relative;
+    display: block;
+    margin: 10px auto;
+    height: auto;
+    min-height: 100px;
+    border: solid #d7dcde 1px;
+  }
+  #upload-panel > .right-side > .item > .name,
+  #upload-panel > .right-side > .item > .progress {
+    padding: 15px 20px;
+    width: 298px;
+    display: block;
+  }
+  #upload-panel > .right-side > .item > .name {
+    height: auto;
+    min-height: 50px;
+    border-bottom: solid #d7dcde 1px;
+  }
+  #upload-panel > .right-side > .item > .name > p {
+    color: #5e666e;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  #upload-panel > .right-side > .item > .progress {
+    height: 48px;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar {
+    height: 20px;
+    width: 258px;
+    border: solid black 1px;
+    border-color: #d7dcde;
+    background-color: #fff;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar > .fill {
+    width: 0%;
+    height: 100%;
+    background-color: #d7dcde;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete {
+    display: none;
+    height: 48px;
+    width: 100%;
+    text-align: center;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete > p {
+    color: green;
+  }
+}
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  #upload-panel {
+    width: 640px;
+  }
+  #upload-panel > .left-side {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    border-bottom-style: solid;
+    border-bottom-color: #d7dcde;
+    border-bottom-width: 1px;
+  }
+  #upload-panel > .left-side #add-files {
+    display: none;
+  }
+  #upload-panel > .left-side > .button {
+    position: relative;
+    margin: 15px 5px;
+    float: none;
+    font-size: 20px;
+  }
+  #upload-panel > .right-side {
+    width: 100%;
+  }
+  #upload-panel > .right-side > .item {
+    background-color: #f5f6f6;
+    width: 100%;
+    position: relative;
+    display: block;
+    height: 50px;
+    border-bottom: solid #d7dcde 1px;
+  }
+  #upload-panel > .right-side > .item > .name,
+  #upload-panel > .right-side > .item > .progress {
+    padding: 15px 20px;
+    height: 100%;
+    display: block;
+    float: left;
+  }
+  #upload-panel > .right-side > .item > .name {
+    width: 440px;
+  }
+  #upload-panel > .right-side > .item > .name p {
+    color: #5e666e;
+    font-size: 16px;
+    max-height: 19px;
+    overflow: hidden;
+  }
+  #upload-panel > .right-side > .item > .progress {
+    width: 198px;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar {
+    height: 20px;
+    width: 150px;
+    border: solid #d7dcde 1px;
+    background-color: #fff;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar > .fill {
+    width: 0%;
+    height: 100%;
+    background-color: #d7dcde;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete {
+    display: none;
+    height: 48px;
+    width: 100%;
+    text-align: center;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete > p {
+    color: green;
+  }
+}
+@media screen and (min-width: 960px) {
+  #upload-panel {
+    width: 960px;
+  }
+  #upload-panel > .left-side {
+    position: absolute;
+    width: 200px;
+    left: 0px;
+    top: 50px;
+    bottom: 0px;
+    border-right-style: solid;
+    border-color: #d7dcde;
+    border-right-width: 1px;
+  }
+  #upload-panel > .left-side #add-files {
+    display: none;
+  }
+  #upload-panel > .left-side > .button {
+    position: relative;
+    display: block;
+    margin: 10px auto;
+    float: none;
+    text-align: left;
+    padding-left: 20px;
+    font-size: 20px;
+  }
+  #upload-panel > .right-side {
+    position: relative;
+    left: 200px;
+    width: 758px;
+    height: auto;
+  }
+  #upload-panel > .right-side > .item {
+    background-color: #f5f6f6;
+    width: 100%;
+    position: relative;
+    display: block;
+    height: 50px;
+    border-bottom: solid #d7dcde 1px;
+  }
+  #upload-panel > .right-side > .item > .name,
+  #upload-panel > .right-side > .item > .progress {
+    padding: 15px 20px;
+    height: 100%;
+    display: block;
+    float: left;
+  }
+  #upload-panel > .right-side > .item > .name {
+    width: 550px;
+  }
+  #upload-panel > .right-side > .item > .name p {
+    color: #5e666e;
+    font-size: 16px;
+    max-height: 19px;
+    overflow: hidden;
+  }
+  #upload-panel > .right-side > .item > .progress {
+    width: 198px;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar {
+    height: 20px;
+    width: 150px;
+    border: solid #d7dcde 1px;
+    background-color: #fff;
+  }
+  #upload-panel > .right-side > .item > .progress > .bar > .fill {
+    width: 0%;
+    height: 100%;
+    background-color: #d7dcde;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete {
+    display: none;
+    height: 198px;
+    width: 100%;
+    text-align: center;
+  }
+  #upload-panel > .right-side > .item > .progress > .complete > p {
+    color: green;
+  }
+}
+#login-panel,
+#register-panel {
+  background-color: #fff;
+  border-color: #d7dcde;
+  border-width: 1px;
+  border-style: solid;
+  width: 320px;
+  margin: 30px auto;
+  padding: 30px 0;
+}
+#login-panel input[type="text"],
+#register-panel input[type="text"],
+#login-panel input[type="password"],
+#register-panel input[type="password"] {
+  width: 278px;
+  height: 50px;
+  margin: 5px 20px;
+  border-style: solid;
+  border-color: #d7dcde;
+  border-width: 1px;
+  background-color: #f2f4f4;
+  font-size: 16px;
+  font-weight: 500;
+  color: #5e666e;
+  padding: 0 16px;
+}
+#login-panel input[type="text"]:focus,
+#register-panel input[type="text"]:focus,
+#login-panel input[type="password"]:focus,
+#register-panel input[type="password"]:focus {
+  outline-style: none;
+  outline-width: 0;
+  border-color: #5e666e;
+  background-color: #fff;
+}
+#login-panel .warning,
+#register-panel .warning {
+  width: 278px;
+  margin: 5px 20px;
+  border-style: solid;
+  border-color: #ff0000;
+  border-width: 1px;
+  background-color: #ffe5e5;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ff0000;
+  padding: 15px 16px;
+  display: none;
+}
+#login-panel .button,
+#register-panel .button {
+  width: 278px;
+  height: 50px;
+  margin: 5px 20px;
+  display: block;
+  float: none;
+}
+#login-panel {
+  display: none;
+}
+#login-panel .register {
+  width: 278px;
+  margin: 0 20px;
+  margin-top: 20px;
+  border-top-style: solid;
+  border-top-color: #d7dcde;
+  border-top-width: 1px;
+  font-size: 12px;
+}
+#register-panel {
+  display: none;
+}
+#myprofile-panel {
+  display: none;
+  position: relative;
+  margin: 20px auto;
+  border-color: #d7dcde;
+  border-width: 1px;
+  border-style: solid;
+  background-color: #fff;
+}
+#myprofile-panel > .header {
+  width: 100%;
+  height: 50px;
+  padding: 13px 20px;
+  margin-bottom: 0px;
+}
+#myprofile-panel > .header > h2 {
+  font-size: 20px;
+  color: #5e666e;
+}
+@media screen and (min-width: 960px) {
+  #myprofile-panel {
+    width: 960px;
+  }
+  #myprofile-panel > .content {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding-left: 320px;
+  }
+  #myprofile-panel > .content > .avatar {
+    position: absolute;
+    width: 320px;
+    margin-left: -320px;
+    margin-top: 0px;
+    padding: 20px;
+  }
+  #myprofile-panel > .content > .avatar #avatar-image {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    border-radius: 280px;
+    background-repeat: round;
+    background-image: url('/API/getUserAvatar');
+    margin-bottom: 20px;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar {
+    display: none;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar-button {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
+  }
+  #myprofile-panel > .content > .bio {
+    position: relative;
+    width: 637px;
+    padding: 20px;
+    border-left-style: solid;
+    border-left-color: #d7dcde;
+    border-left-width: 1px;
+  }
+  #myprofile-panel > .content > .bio #bio-content {
+    width: 100%;
+    height: 280px;
+    outline: none;
+    margin-bottom: 20px;
+    background: #f2f4f4;
+    resize: none;
+    border-color: #d7dcde;
+    padding: 20px;
+    font-size: 24px;
+    color: #768089;
+  }
+  #myprofile-panel > .content > .bio #save-bio {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
+  }
+}
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  #myprofile-panel {
+    width: 640px;
+  }
+  #myprofile-panel > .content {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  #myprofile-panel > .content > .avatar {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+  }
+  #myprofile-panel > .content > .avatar #avatar-image {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 280px;
+    background-repeat: round;
+    background-image: url('/API/getUserAvatar');
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar {
+    display: none;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar-button {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
+  }
+  #myprofile-panel > .content > .bio {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    border-top-style: solid;
+    border-top-color: #d7dcde;
+    border-top-width: 1px;
+  }
+  #myprofile-panel > .content > .bio #bio-content {
+    width: 100%;
+    height: 280px;
+    outline: none;
+    margin-bottom: 20px;
+    background: #f2f4f4;
+    resize: none;
+    border-color: #d7dcde;
+    padding: 20px;
+    font-size: 24px;
+    color: #768089;
+  }
+  #myprofile-panel > .content > .bio #save-bio {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 639px) {
+  #myprofile-panel {
+    width: 320px;
+  }
+  #myprofile-panel > .content {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  #myprofile-panel > .content > .avatar {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+  }
+  #myprofile-panel > .content > .avatar #avatar-image {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 280px;
+    background-repeat: round;
+    background-image: url('/API/getUserAvatar');
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar {
+    display: none;
+  }
+  #myprofile-panel > .content > .avatar #change-avatar-button {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
+  }
+  #myprofile-panel > .content > .bio {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    border-top-style: solid;
+    border-top-color: #d7dcde;
+    border-top-width: 1px;
+  }
+  #myprofile-panel > .content > .bio #bio-content {
+    width: 100%;
+    height: 280px;
+    outline: none;
+    margin-bottom: 20px;
+    background: #f2f4f4;
+    resize: none;
+    border-color: #d7dcde;
+    padding: 20px;
+    font-size: 24px;
+    color: #768089;
+  }
+  #myprofile-panel > .content > .bio #save-bio {
+    position: relative;
+    margin: 0 auto;
+    width: 160px;
+    height: 50px;
+    display: block;
+    float: none;
+  }
+}
+#myfiles-panel {
+  display: none;
+  position: relative;
+  margin: 20px auto;
+  border-color: #d7dcde;
+  border-width: 1px;
+  border-style: solid;
+  padding-bottom: 20px;
+  background-color: #fff;
+}
+#myfiles-panel > .header {
+  width: 100%;
+  height: 50px;
+  padding: 13px 20px;
+}
+#myfiles-panel > .header > h2 {
+  font-size: 20px;
+  color: #5e666e;
+}
+@media screen and (min-width: 960px) {
+  #myfiles-panel {
+    width: 960px;
+  }
+  #myfiles-panel .content {
+    width: 958px;
+    height: auto;
+    position: relative;
+  }
+  #myfiles-panel .content .item {
+    width: 958px;
+    position: relative;
+    border-bottom-color: #d7dcde;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    height: 50px;
+    background-color: #f5f6f6;
+    transition: background-color 1s;
+  }
+  #myfiles-panel .content .item:hover {
+    background-color: #fff;
+  }
+  #myfiles-panel .content .item .name {
+    width: 758px;
+    display: block;
+    position: relative;
+    float: left;
+    height: 49px;
+    padding: 15px 20px;
+  }
+  #myfiles-panel .content .item .name > p {
+    color: #5e666e;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  #myfiles-panel .content .item .delete {
+    width: 200px;
+    display: block;
+    position: relative;
+    float: right;
+    height: 49px;
+    padding: 10px;
+  }
+  #myfiles-panel .content .item .delete .button {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  #myfiles-panel {
+    width: 640px;
+  }
+  #myfiles-panel .content {
+    width: 638px;
+    height: auto;
+    position: relative;
+  }
+  #myfiles-panel .content .item {
+    width: 638px;
+    position: relative;
+    border-bottom-color: #d7dcde;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    height: 50px;
+    background-color: #f5f6f6;
+    transition: background-color 1s;
+  }
+  #myfiles-panel .content .item:hover {
+    background-color: #fff;
+  }
+  #myfiles-panel .content .item .name {
+    width: 508px;
+    display: block;
+    position: relative;
+    float: left;
+    height: 49px;
+    padding: 15px 20px;
+  }
+  #myfiles-panel .content .item .name > p {
+    color: #5e666e;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  #myfiles-panel .content .item .delete {
+    width: 130px;
+    display: block;
+    position: relative;
+    float: right;
+    height: 49px;
+    padding: 10px;
+  }
+  #myfiles-panel .content .item .delete .button {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 639px) {
+  #myfiles-panel {
+    width: 320px;
+  }
+  #myfiles-panel .content {
+    width: 318px;
+    height: auto;
+    position: relative;
+  }
+  #myfiles-panel .content > .item {
+    background-color: #f5f6f6;
+    width: 300px;
+    position: relative;
+    display: block;
+    margin: 10px auto;
+    height: auto;
+    min-height: 100px;
+    border: solid #d7dcde 1px;
+  }
+  #myfiles-panel .content > .item > .name,
+  #myfiles-panel .content > .item > .delete {
+    padding: 15px 20px;
+    width: 298px;
+    display: block;
+  }
+  #myfiles-panel .content > .item > .name {
+    height: auto;
+    min-height: 50px;
+    border-bottom: solid #d7dcde 1px;
+  }
+  #myfiles-panel .content > .item > .name > p {
+    color: #5e666e;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  #myfiles-panel .content > .item > .delete {
+    padding: 5px 20px;
+    height: 48px;
+  }
+  #myfiles-panel .content > .item > .delete > .button {
+    width: 100%;
+    height: 100%;
   }
 }

@@ -1,0 +1,111 @@
+#home-panel {
+  margin: 0 auto;
+  display: none;
+  .item {
+    background-color: @text-color;
+    border-color: @border-color;
+    border-width: 1px;
+    border-style: solid;
+    float: left;
+    width: 300px;
+    height: 375px;
+    margin: 10px;
+    .item-header {
+      position: absolute;
+      margin-left: 0;
+      margin-top: 0;
+      height: 59px;
+      width: 300px;
+      border-bottom-color: @border-color;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      p {
+        font-size: 16px;
+        color: @dark-text-color;
+        padding: 20px;
+      }
+    }
+    .item-content {
+      position: absolute;
+      margin-left: 20px;
+      margin-top: 80px;
+      height: 215px;
+      width: 260px;
+      background-color: @light-background-color;
+      .icon {
+        margin-left: 92px;
+        margin-top: 57px;
+        width: 75px;
+        height: 100px;
+        background-image: url('/API/getFileThumb');
+        background-size: 75px 100px;
+      }
+    }
+    .item-footer {
+      position: absolute;
+      margin-left: 0;
+      margin-top: 315px;
+      height: 59px;
+      width: 300px;
+      border-top-color: @border-color;
+      border-top-width: 1px;
+      border-top-style: solid;
+      >.button {
+        margin-left: 75px;
+        width: 150px;
+        height: 40px;
+        margin-top: 10px;
+        padding-top: 7px;
+        text-align: center;
+      }
+    }
+  }
+  .get-more-files {
+    display: block;
+    position: relative;
+    float: left;
+    .button {
+      position: relative;
+      display: block;
+      margin: 20px auto;
+      width: 200px;
+      float: none;
+    }
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 639px) {
+    #home-panel {
+      width: 320px;
+      .get-more-files {
+        width: 320px;
+      }
+    }
+}
+
+@media screen and (min-width: 640px) and (max-width: 959px) {
+  #home-panel {
+    width: 640px;
+    .get-more-files {
+      width: 640px;
+    }
+  }
+}
+
+@media screen and (min-width: 960px) and (max-width: 1279px) {
+  #home-panel {
+    width: 960px;
+    .get-more-files {
+      width: 960px;
+    }
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  #home-panel {
+    width: 1280px;
+    .get-more-files {
+      width: 1280px;
+    }
+  }
+}
