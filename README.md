@@ -11,4 +11,4 @@ Neon is a file hosting and sharing script written by [bankerup.me](https://banke
    *  Simple profile editor
 
 # Demo
-[bankerup.me](http://neon.bankerup.me)
+[Neon demo](http://neon.bankerup.me)
